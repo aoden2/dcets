@@ -13,6 +13,8 @@ System Architecture:
 * Connect trader and broker server with socket
 
 Programming language:
-Server: Java
-Client: Html&Javascript(JSP)/Java
+
+Server side: Java
+
+Client side: Html&Javascript(or JSP)/Java
 
