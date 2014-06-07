@@ -27,6 +27,7 @@ public class OriginOrderFIXHelper {
 			oo.setStatus(Integer.parseInt(mf.getTag((init_tag+4))));
 			oo.setBid(Integer.parseInt(mf.getTag((init_tag+5))));
 			init_tag = init_tag + 10;
+			oos.add(oo);
 		}	
 		return oos;	
 	}
