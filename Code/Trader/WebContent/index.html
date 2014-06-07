@@ -10,6 +10,7 @@
   <link rel="stylesheet" href="css/login.css">
   <!---jQuery Files-->
   <script src="js/jquery-1.7.1.min.js"></script>
+  <script src="js/jquery-2.1.0.js"></script>
   <script src="js/jquery.spinner.js"></script>
   <script type="text/javascript" src="js/forms/jquery.validate.min.js"></script>
 
@@ -27,6 +28,22 @@
         }, 1000);
        });
     });
+    
+    function login(){
+		usn = document.getElementById("name");
+		psw = document.getElementById("pass");
+        $.post("Login", {
+			username : usn.value,
+			password : psw.value
+		}, function(data) {
+			if (data.trim() == "loginSuccess") {
+				window.location.href = "dashboard.html";
+			} else {
+				alert("fail!");
+			}
+		});
+		
+        }
   </script>
 </head>
 <body>
@@ -41,21 +58,21 @@
          <div class="separator"></div>
        </div>
        <div class="login">
-         <form id="lg-form" method="post" action="dashboard.html">
+         <form id="lg-form" method="post">
            <fieldset>
               <ul>
                  <li id="usr-field">
-                  <input class="input required" name="name" type="text" size="26" minlength ="1" placeholder="Username..." />
+                  <input class="input required" id="name" type="text" size="26" minlength ="1" placeholder="Username..." />
                  </li>
                  <li id="psw-field">
-                  <input class="input required" name="pass" type="password" size="26" minlength="1" placeholder="Password..." />
+                  <input class="input required" id="pass" type="password" size="26" minlength="1" placeholder="Password..." />
                  </li>
                  <li class="checkbox">
                   <input class="checkbox" type="checkbox" id="remember-me" value="remember" /> 
                   <label for="remember-me" class="checkbox-text">Remeber Me</label>
                  </li>
                  <li>
-                  <input class="submit" type="submit" value=""/>
+                  <input class="submit" type = "button" onclick="login();"  value="" />
                  </li>
               </ul>
            </fieldset>
