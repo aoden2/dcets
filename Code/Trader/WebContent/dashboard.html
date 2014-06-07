@@ -24,6 +24,42 @@
   <!--[if lte IE 8]>
   <script language="javascript" type="text/javascript" src="js/flot/excanvas.min.js"></script>
   <![endif]-->
+  
+  <script type="text/javascript">
+  		var item_id=-1;  
+        $(function () {
+            GetOrders();
+            GetBrokers();  
+            setInterval("GetOrders()", 5000); //每隔5秒刷新订单信息
+        });  
+        function GetOrders() { //获取最新点击量  
+             
+              
+            $.ajax({  
+                type: "get",  
+                url: "OrderServlet",  
+                data:{id:item_id},  
+                success: function (str) {  
+                	$("#example").html(str);
+                	                      
+                }  
+            });  
+        }
+        function GetBrokers() { //获取最新点击量  
+            
+            
+            $.ajax({  
+                type: "get",  
+                url: "BrokerServlet",  
+                  
+                success: function (str) {
+                	alert(str);   
+                	$("#broker-select").html(str);
+                	                     
+                }  
+            });  
+        }  
+    </script>
 </head>
 <body>
 
@@ -111,6 +147,7 @@
           you only need 3 divs with classes 'box', 'box-head' and 'box-content'.
           <br><br>
           Adminity also includes a styler. Open it by clicking the eye icon near the logo. A tooltip will tell you what color each colorpicker changes.<br><br>
+          <input type="button" id="query-gold" class="button purple" value="Gold" >
           <input type="button" id="open-modal-dialog" class="button yellow" value="Initiate Order" >
           </p>
         </div>
@@ -145,11 +182,8 @@
       <div class="form-row">
             <label class="form-label">Broker</label>
             <div class="form-item">
-              <select>
-                <option value='option1'>ABC</option>
-                <option value='option2'>BC1</option>
-                <option value='option3'>BC2</option>
-                <option value='option4'>BC3</option>
+              <select id="broker-select">
+                
               </select>
             </div>
        </div>
@@ -168,120 +202,7 @@
         <div class="box-head"><h2>Visitors' Browsers</h2></div>
         <div class="box-content no-pad">
         <table class="display" id="example">
-        <thead>
-          <tr>
-            <th>Period</th>
-            <th>Broker</th>
-            <th>Qty</th>
-            <th>Bid</th>
-            <th>Ask</th>
-            <th>Qty</th>
-            <th>Broker</th>
-            <th>Last</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr class="odd gradeX">
-          <td class="center"> SEP14</td>
-          <td class="center"> ABC</td>
-          <td class="center"> 5</td>
-          <td class="center"> 1240</td>
-          <td class="center"> 1246</td>
-          <td class="center"> 10</td>
-          <td class="center"> ABC</td>
-          <td class="center"> 1241</td>
-          </tr>
-          <tr class="even gradeC">
-            <td class="center"> SEP14</td>
-          <td class="center"> ABC</td>
-          <td class="center"> 5</td>
-          <td class="center"> 1240</td>
-          <td class="center"> 1246</td>
-          <td class="center"> 10</td>
-          <td class="center"> ABC</td>
-          <td class="center"> 1241</td>
-          </tr>
-          <tr class="odd gradeA">
-            <td class="center"> SEP14</td>
-          <td class="center"> ABC</td>
-          <td class="center"> 5</td>
-          <td class="center"> 1240</td>
-          <td class="center"> 1246</td>
-          <td class="center"> 10</td>
-          <td class="center"> ABC</td>
-          <td class="center"> 1241</td>
-          </tr>
-          <tr class="even gradeA">
-            <td class="center"> SEP14</td>
-          <td class="center"> ABC</td>
-          <td class="center"> 5</td>
-          <td class="center"> 1240</td>
-          <td class="center"> 1246</td>
-          <td class="center"> 10</td>
-          <td class="center"> ABC</td>
-          <td class="center"> 1241</td>
-          </tr>
-          <tr class="odd gradeA">
-            <td class="center"> SEP14</td>
-          <td class="center"> ABC</td>
-          <td class="center"> 5</td>
-          <td class="center"> 1240</td>
-          <td class="center"> 1246</td>
-          <td class="center"> 10</td>
-          <td class="center"> ABC</td>
-          <td class="center"> 1241</td>
-          </tr>
-          <tr class="even gradeA">
-            <td class="center"> SEP14</td>
-          <td class="center"> ABC</td>
-          <td class="center"> 5</td>
-          <td class="center"> 1240</td>
-          <td class="center"> 1246</td>
-          <td class="center"> 10</td>
-          <td class="center"> ABC</td>
-          <td class="center"> 1241</td>
-          </tr>
-          <tr class="gradeA">
-            <td class="center"> SEP14</td>
-          <td class="center"> ABC</td>
-          <td class="center"> 5</td>
-          <td class="center"> 1240</td>
-          <td class="center"> 1246</td>
-          <td class="center"> 10</td>
-          <td class="center"> ABC</td>
-          <td class="center"> 1241</td>
-          </tr>
-          <tr class="gradeA">
-            <td class="center"> SEP14</td>
-          <td class="center"> ABC</td>
-          <td class="center"> 5</td>
-          <td class="center"> 1240</td>
-          <td class="center"> 1246</td>
-          <td class="center"> 10</td>
-          <td class="center"> ABC</td>
-          <td class="center"> 1241</td>
-          </tr>
-          <tr class="gradeA">
-            <td class="center"> SEP14</td>
-          <td class="center"> ABC</td>
-          <td class="center"> 5</td>
-          <td class="center"> 1240</td>
-          <td class="center"> 1246</td>
-          <td class="center"> 10</td>
-          <td class="center"> ABC</td>
-          <td class="center"> 1241</td>
-          </tr>
-          <tr class="gradeA">
-            <td class="center"> SEP14</td>
-          <td class="center"> ABC</td>
-          <td class="center"> 5</td>
-          <td class="center"> 1240</td>
-          <td class="center"> 1246</td>
-          <td class="center"> 10</td>
-          <td class="center"> ABC</td>
-          <td class="center"> 1241</td>
-          </tr>
-        </tbody>
+        
       </table>
         </div>
       </div>
@@ -326,6 +247,11 @@
           $( "#modal-dialog" ).dialog( "open" );
           return false;
         });
+
+        $( "#query-gold" ).click(function() {
+            item_id=1;
+            return false;
+          });
   });/* for the flot chart demo */
 
   $('#example').dataTable( {
