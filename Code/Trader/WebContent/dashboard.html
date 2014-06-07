@@ -53,12 +53,25 @@
                 url: "BrokerServlet",  
                   
                 success: function (str) {
-                	alert(str);   
                 	$("#broker-select").html(str);
                 	                     
                 }  
             });  
         }  
+        function orderSell(x) {
+        	$( "#modal-dialog" ).dialog( "open" );
+        	document.getElementById("order-form-sell").checked = true; 
+        	document.getElementById("order-form-item").value = x;
+        	document.getElementById("order-form-qty").value = x;
+			document.getElementById("order-form-price").value = x;
+            }
+        function orderBuy(x) {
+        	$( "#modal-dialog" ).dialog( "open" );
+        	document.getElementById("order-form-buy").checked = true;   
+        	document.getElementById("order-form-item").value = x;
+        	document.getElementById("order-form-qty").value = x;
+			document.getElementById("order-form-price").value = x;
+            }        
     </script>
 </head>
 <body>
@@ -171,26 +184,26 @@
         </div>
       </div>
       
+      <!-- Auto Fill TODO -->
       <div id="modal-dialog" title="Sample Modal Dialog">
       <div class="form-row">
             <label class="form-label">Operation</label>
-            <input name='rgroup' type='radio' value='radio1' />Buy
-            <input checked='checked' name='rgroup' type='radio' value='radio2' />Sell
+            <input id='order-form-buy' name='rgroup' type='radio' value='radio1' />Buy
+            <input id='order-form-sell' checked='checked' name='rgroup' type='radio' value='radio2' />Sell
           </div>
       <div class="form-row">
-           <p class="form-label">Item</p><div class="form-item"><input type="text" /></div></div>
+           <p class="form-label">Item</p><div class="form-item"><input id='order-form-item' type="text" /></div></div>
       <div class="form-row">
             <label class="form-label">Broker</label>
             <div class="form-item">
-              <select id="broker-select">
-                
+              <select id="broker-select">                
               </select>
             </div>
        </div>
        <div class="form-row">
-           <p class="form-label">Qty</p><div class="form-item"><input type="text" /></div></div>
+           <p class="form-label">Qty</p><div class="form-item"><input id='order-form-qty' type="text" /></div></div>
        <div class="form-row">
-           <p class="form-label">Price</p><div class="form-item"><input type="text" /></div></div>
+           <p class="form-label">Price</p><div class="form-item"><input id='order-form-price' type="text" /></div></div>
        <div class="form-row">
        		<input type='checkbox' value='check1' />I confirm the trade is correct
             </div>

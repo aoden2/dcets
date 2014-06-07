@@ -13,7 +13,7 @@ import util.JDBCUtil;
 
 public class UserDao implements UserDaoImpl {
 	
-	private JDBCUtil jdbc = new JDBCUtil("meet");
+	private JDBCUtil jdbc = new JDBCUtil("dcetst1");
 
 	public List<User> listAllUser() {
 		List<User> users = new ArrayList<User>();

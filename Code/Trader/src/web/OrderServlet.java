@@ -15,85 +15,91 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet("/OrderServlet")
 public class OrderServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public OrderServlet() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
-    
-    protected void processRequest(HttpServletRequest request,
-            HttpServletResponse response)
-            throws ServletException, IOException {
-        PrintWriter out = response.getWriter(); 
-
-        try {
-            
-        	int id = Integer.parseInt(request.getParameter("id"));
-            //根据类型用ajax方式传送对应类型的电脑列表
-            //List<Computer> list =dao.PCList(type);
-            //String s = new String(type.getBytes("iso-8859-1"),"utf-8");
-            String txt="<thead>"+
-          "<tr>"+
-            "<th>Period</th>"+
-            "<th>Broker</th>"+
-            "<th>Qty</th>"+
-            "<th>Bid</th>"+
-            "<th>Ask</th>"+
-            "<th>Qty</th>"+
-            "<th>Broker</th>"+
-            "<th>Last</th>"+
-          "</tr>"+
-        "</thead>"+"<tbody>";
-            for(int i = 0;i < 5;i++){
-            	txt=txt+"<tr class=\"odd gradeX\">"+
-          "<td class=\"center\"> SEP14</td>"+
-          "<td class=\"center\"> ABC</td>"+
-          "<td class=\"center\"> 5</td>"+
-          "<td class=\"center\"> 1240</td>"+
-          "<td class=\"center\"> 1246</td>"+
-          "<td class=\"center\"> 10</td>"+
-          "<td class=\"center\"> ABC</td>"+
-          "<td class=\"center\"> 1241</td>"+
-          "</tr>"+
-          "<tr class=\"even gradeC\">"+
-            "<td class=\"center\"> SEP14</td>"+
-          "<td class=\"center\"> ABC</td>"+
-          "<td class=\"center\"> 5</td>"+
-          "<td class=\"center\"> 1240</td>"+
-          "<td class=\"center\"> 1246</td>"+
-          "<td class=\"center\"> 10</td>"+
-          "<td class=\"center\"> ABC</td>"+
-          "<td class=\"center\"> 1241</td>"+
-          "</tr>";
-            }
-            txt+="</tbody>";
-            if(id==-1){txt="";}
-            //String t = new String(txt.getBytes("utf-8"),"iso-8859-1");
-            out.println(txt);
-            out.flush();
-        } catch(Exception e){
-        	e.printStackTrace();
-        }
-        finally {
-            out.close();
-        }
-    }
 
 	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#HttpServlet()
 	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	public OrderServlet() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+	protected void processRequest(HttpServletRequest request,
+			HttpServletResponse response) throws ServletException, IOException {
+		PrintWriter out = response.getWriter();
+
+		try {
+
+			int id = Integer.parseInt(request.getParameter("id"));
+			// 根据类型用ajax方式传送对应类型的电脑列表
+			// List<Computer> list =dao.PCList(type);
+			// String s = new String(type.getBytes("iso-8859-1"),"utf-8");
+			String txt = "<thead>" + "<tr>" + "<th>Period</th>"
+					+ "<th>Broker</th>" + "<th>Qty</th>" + "<th>Bid</th>"
+					+ "<th>Ask</th>" + "<th>Qty</th>" + "<th>Broker</th>"
+					+ "<th>Last</th>" + "</tr>" + "</thead>" + "<tbody>";
+			for (int i = 0; i < 10; i++) {
+				txt = txt
+						+ "<tr class=\"odd gradeX\">"
+						+ "<td class=\"center\"> SEP14</td>"
+						+ "<td onclick=\"orderSell(520);\" class=\"center\"> ABC</td>"
+						+ "<td onclick=\"orderSell(520);\" class=\"center\"> 5</td>"
+						+ "<td onclick=\"orderSell(520);\" class=\"center\"> 1240</td>"
+						+ "<td onclick=\"orderBuy(886);\"class=\"center\"> 1246</td>"
+						+ "<td onclick=\"orderBuy(886);\"class=\"center\"> 10</td>"
+						+ "<td onclick=\"orderBuy(886);\"class=\"center\"> ABC</td>"
+						+ "<td class=\"center\"> 1241</td>" + "</tr>";/*
+																	 * +
+																	 * "<tr class=\"even gradeC\">"
+																	 * +
+																	 * "<td class=\"center\"> SEP14</td>"
+																	 * +
+																	 * "<td class=\"center\"> ABC</td>"
+																	 * +
+																	 * "<td class=\"center\"> 5</td>"
+																	 * +
+																	 * "<td class=\"center\"> 1240</td>"
+																	 * +
+																	 * "<td class=\"center\"> 1246</td>"
+																	 * +
+																	 * "<td class=\"center\"> 10</td>"
+																	 * +
+																	 * "<td class=\"center\"> ABC</td>"
+																	 * +
+																	 * "<td class=\"center\"> 1241</td>"
+																	 * + "</tr>"
+																	 */
+			}
+			txt += "</tbody>";
+			if (id == -1) {
+				txt = "";
+			}
+			// String t = new String(txt.getBytes("utf-8"),"iso-8859-1");
+			out.println(txt);
+			out.flush();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			out.close();
+		}
+	}
+
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
+	 *      response)
+	 */
+	protected void doGet(HttpServletRequest request,
+			HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		processRequest(request, response);
 	}
 
 	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
+	 *      response)
 	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request,
+			HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		processRequest(request, response);
 	}
