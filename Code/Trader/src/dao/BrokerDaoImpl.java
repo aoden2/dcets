@@ -30,6 +30,7 @@ public class BrokerDaoImpl implements BrokerDao {
 					broker.setName(rs.getString("name"));
 					broker.setIp(rs.getString("ip"));
 					broker.setPort(rs.getInt("port"));
+					broker.setPass(rs.getString("pass"));
 					brokers.add(broker);
 				}
 			} catch (SQLException e) {
@@ -40,16 +41,17 @@ public class BrokerDaoImpl implements BrokerDao {
 			return brokers;
 		}
 
-	public int addBroker(String name, String ip, int port) {
+	public int addBroker(String name, String ip, int port, String pass) {
 		int rtn = 0;
 		Connection conn = jdbc.getConnection();
-		String sql = "insert into brokerinfo (name, ip, port) values (?, ?, ?);";
+		String sql = "insert into brokerinfo (name, ip, port, pass) values (?, ?, ?, ?);";
 		PreparedStatement pst = null;
 		try {
 			pst = conn.prepareStatement(sql);
 			pst.setString(1, name);
 			pst.setString(2, ip);
 			pst.setInt(3,  port);
+			pst.setString(4, pass);
 			pst.execute();
 			
 		} catch (SQLException e) {

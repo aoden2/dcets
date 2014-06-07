@@ -5,6 +5,7 @@ public class BrokerInfo {
 	private String name;
 	private String ip;
 	private int port;
+	private String pass;
 	public int getId() {
 		return id;
 	}
@@ -29,12 +30,19 @@ public class BrokerInfo {
 	public void setPort(int port) {
 		this.port = port;
 	}
-	public BrokerInfo(int id, String name, String ip, int port) {
+	public String getPass() {
+		return pass;
+	}
+	public void setPass(String pass) {
+		this.pass = pass;
+	}
+	public BrokerInfo(int id, String name, String ip, int port, String pass) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.ip = ip;
 		this.port = port;
+		this.pass = pass;
 	}
 	public BrokerInfo() {
 		super();
