@@ -12,18 +12,19 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.Hashtable;
 
 public class MyThread extends Thread {
 	Socket socket = null;
 	PrintWriter os = null;
 	BufferedReader is = null;
 	String password = null;
-	MyProcess process = null;
+	Hashtable<Integer, MyProcess> processes = null;
 
-	public MyThread(Socket socket, String password, MyProcess process) {
+	public MyThread(Socket socket, String password, Hashtable<Integer, MyProcess> processes) {
 		this.socket = socket;
 		this.password = password;
-		this.process = process;
+		this.processes = processes;
 		try {
 			this.os = new PrintWriter(this.socket.getOutputStream());
 			this.is = new BufferedReader(new InputStreamReader(this.socket.getInputStream()));
@@ -37,7 +38,10 @@ public class MyThread extends Thread {
 			String data = is.readLine();
 			data = MyAES.decrypt(data, password);
 			
+			// 0 means the future id.
+			MyProcess process = processes.get(0);
 			String ret = process.procData(data);
+			processes.put(0, process);
 			
 			ret = MyAES.encrypt(ret, password);
 			os.println(ret);
