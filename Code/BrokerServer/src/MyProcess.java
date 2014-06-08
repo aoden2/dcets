@@ -13,6 +13,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Hashtable;
@@ -32,7 +33,7 @@ public class MyProcess {
 	}
 
 	public String procData(String data) {
-		String ret = null;
+		String ret = new String();
 		OriginOrder oo = OriginOrderFIXHelper.parseOriginOrder(data);
 		if (oo.getStatus() == 3){
 			addOrderToDatabase(oo);
@@ -87,7 +88,7 @@ public class MyProcess {
 			pst.setInt(4, oo.getCumQtyl());
 			pst.setInt(5, oo.getLeavesqty());
 			pst.setInt(6, oo.getPrice());
-			pst.setDate(7, (Date) oo.getDate());
+			pst.setTimestamp(7, new Timestamp(oo.getDate().getTime()));
 			pst.setInt(8, oo.getStatus());
 			pst.executeUpdate();
 			rs = pst.getGeneratedKeys();
@@ -191,8 +192,8 @@ public class MyProcess {
 	private void matchOrder() {
 		boolean isMatched = false;
 		try {
-			int topSell = sellQuene.get(0);
-			int topBuy = buyQuene.get(0);
+			int topSell = sellQuene.get(1);
+			int topBuy = buyQuene.get(1);
 			OriginOrder sell = orders.get(topSell);
 			OriginOrder buy = orders.get(topBuy);
 			if (buy.getPrice() >= sell.getPrice()) {
