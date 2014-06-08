@@ -6,7 +6,6 @@
  * 
  * All rights reserved.
  */
-package entity;
 
 import java.util.Date;
 

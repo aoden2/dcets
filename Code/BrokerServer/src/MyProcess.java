@@ -6,7 +6,6 @@
  * 
  * All rights reserved.
  */
-package util;
 
 import java.sql.Connection;
 import java.sql.Date;
@@ -18,9 +17,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Hashtable;
 import java.util.List;
-
-import entity.FinalOrder;
-import entity.OriginOrder;
 
 public class MyProcess {
 	List<Integer> sellQuene = null;

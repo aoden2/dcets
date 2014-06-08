@@ -1,3 +1,13 @@
 /Main.class
 /entity
 /util
+/FinalOrder.class
+/OriginOrder.class
+/MyAES.class
+/MyAddProcess.class
+/MyFIX.class
+/MyJDBC.class
+/MyProcess.class
+/MyServer.class
+/MyThread.class
+/OriginOrderFIXHelper.class

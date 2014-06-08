@@ -6,7 +6,7 @@
  * 
  * All rights reserved.
  */
-package entity;
+
 
 public class FinalOrder {
 	private int id;

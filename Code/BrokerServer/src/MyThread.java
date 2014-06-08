@@ -6,7 +6,6 @@
  * 
  * All rights reserved.
  */
-package util;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;

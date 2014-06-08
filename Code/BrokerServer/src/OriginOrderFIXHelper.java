@@ -6,11 +6,8 @@
  * 
  * All rights reserved.
  */
-package util;
 
 import java.util.Date;
-
-import entity.OriginOrder;
 
 public class OriginOrderFIXHelper {
 	// private String broker_id = "1";

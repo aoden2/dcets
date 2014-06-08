@@ -6,7 +6,6 @@
  * 
  * All rights reserved.
  */
-package util;
 
 import java.net.ServerSocket;
 import java.net.Socket;
