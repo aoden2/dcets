@@ -8,6 +8,8 @@
  */
 package entity;
 
+import java.util.Date;
+
 public class OriginOrder {
 	private int id;
 	private int fid; // future id
@@ -16,6 +18,7 @@ public class OriginOrder {
 	private int cumQtyl; // 成交量
 	private int leavesqty; // 剩下未成交量
 	private int price; // 可以接受的报价
+	private Date date; // 接收时间
 	private int status;
 
 	public int getId() {
@@ -72,6 +75,14 @@ public class OriginOrder {
 
 	public void setPrice(int price) {
 		this.price = price;
+	}
+
+	public Date getDate() {
+		return date;
+	}
+
+	public void setDate(Date date) {
+		this.date = date;
 	}
 
 	public int getStatus() {
