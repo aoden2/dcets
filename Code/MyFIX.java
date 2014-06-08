@@ -1,15 +1,12 @@
 /*
  * Author   : Zhou Cheng
- * Date     : 2014-6-7
- * Project  : FIX
+ * Date     : 2014-6-8
+ * Project  : BrokerServer
  * Filename : MyFIX.java
  * 
  * All rights reserved.
  */
 
-/*
- * tag值高于 100 的属于自定义数据。
- * */
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Iterator;
@@ -32,14 +29,14 @@ public class MyFIX {
 		fix.put("52", "2014060714:14:14");
 		con = new LinkedHashMap<String, String>();
 	}
-	
+
 	public MyFIX(String data) {
 		fix = new LinkedHashMap<String, String>();
 		con = new LinkedHashMap<String, String>();
 		int check = data.indexOf("^10=");
 		data = data.substring(0, check);
-		String[] tags = data.split("^");
-		for (int i = 0, j = tags.length; i < j; i ++) {
+		String[] tags = data.split("\\^");
+		for (int i = 0, j = tags.length; i < j; i++) {
 			String[] t = tags[i].split("=");
 			setTag(Integer.valueOf(t[0]), t[1]);
 		}
@@ -55,21 +52,21 @@ public class MyFIX {
 		content += "10=" + Integer.toString(checkSum);
 		return content;
 	}
-	
+
 	public void setTag(int tag, String val) {
 		if (tag > 100)
 			con.put(Integer.toString(tag), val);
 		else
 			fix.put(Integer.toString(tag), val);
 	}
-	
+
 	public String getTag(int tag) {
 		if (tag > 100)
 			return con.get(Integer.toString(tag));
 		else
 			return fix.get(Integer.toString(tag));
 	}
-	
+
 	public static String parseMap2Str(LinkedHashMap<String, String> map) {
 		String content = "";
 		Iterator<Entry<String, String>> iter = map.entrySet().iterator();
@@ -89,7 +86,7 @@ public class MyFIX {
 		date = formatter.format(curDate);
 		return date;
 	}
-	
+
 	public static boolean checkData(String data) {
 		int check = data.indexOf("^10=");
 		if (check == -1)
