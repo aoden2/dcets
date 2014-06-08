@@ -34,10 +34,18 @@ public class MyProcess {
 
 	public String procData(String data) {
 		String ret = null;
+		OriginOrder oo = OriginOrderFIXHelper.parseOriginOrder(data);
+		if (oo.getStatus() == 3){
+			procOrder(0, oo);
+		}
+		else if (oo.getStatus() == -3){
+			procOrder(1, oo);
+		}
+		else if (oo.getStatus() == 4){
+			procOrder(2, oo);
+		}
 		// TODO
-		// processs the data to origin data;
-		// if is a Buy, Sell or Revocation, go to the procOrder function.
-		// origin order should be added to database here.
+		// order should be added to database here.
 		return ret;
 	}
 

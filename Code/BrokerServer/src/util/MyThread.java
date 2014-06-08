@@ -37,14 +37,13 @@ public class MyThread extends Thread {
 		try {
 			String data = is.readLine();
 			data = MyAES.decrypt(data, password);
-			
-			// 0 means the future id.
-			// FIX need be analysis here
-			int futureId = Order2FIX.getFutureId(data);
-			MyProcess process = processes.get(0);
+
+			MyFIX mf = new MyFIX(data);
+			int fid = Integer.parseInt(mf.getTag(101));
+			MyProcess process = processes.get(fid);
 			if (null == process) {
-				MyAddProcess.add(0, processes);
-				process = processes.get(0);
+				MyAddProcess.add(fid, processes);
+				process = processes.get(fid);
 			}
 			String ret = process.procData(data);
 			
