@@ -9,8 +9,11 @@
 package util;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Hashtable;
@@ -36,16 +39,18 @@ public class MyProcess {
 		String ret = null;
 		OriginOrder oo = OriginOrderFIXHelper.parseOriginOrder(data);
 		if (oo.getStatus() == 3){
+			addOrderToDatabase(oo);
 			procOrder(0, oo);
+			// TODO add return msg.
 		}
 		else if (oo.getStatus() == -3){
+			addOrderToDatabase(oo);
 			procOrder(1, oo);
+			// TODO add return msg.
 		}
 //		else if (oo.getStatus() == 4){
 //			procOrder(2, oo);
 //		}
-		// TODO
-		// order should be added to database here.
 		return ret;
 	}
 
@@ -71,6 +76,36 @@ public class MyProcess {
 		return 0;
 	}
 
+	private void addOrderToDatabase(OriginOrder oo) {
+		MyJDBC jdbc = new MyJDBC("BrokerServer");
+		Connection conn = jdbc.getConnection();
+		String sql = null;
+		PreparedStatement pst = null;
+		ResultSet rs = null;
+		try {
+			sql = "insert into BrokerServer.OriginOrder (fid, tid, quantity, cumQtyl, leavesqty, price, date, status) values (?, ?, ?, ?, ?, ?, ?, ?)";
+			pst = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+			pst.setInt(1, oo.getFid());
+			pst.setInt(2, oo.getTid());
+			pst.setInt(3, oo.getQuantity());
+			pst.setInt(4, oo.getCumQtyl());
+			pst.setInt(5, oo.getLeavesqty());
+			pst.setInt(6, oo.getPrice());
+			pst.setDate(7, (Date) oo.getDate());
+			pst.setInt(8, oo.getStatus());
+			pst.executeUpdate();
+			rs = pst.getGeneratedKeys();
+			if (rs.next()) {
+				int id = rs.getInt(1);
+				oo.setId(id);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			jdbc.close(conn, pst, null);
+		}
+	}
+	
 	private void makeBuyHeap(int p) {
 		int size = buyQuene.size();
 		if (p >= size)
