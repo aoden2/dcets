@@ -41,9 +41,9 @@ public class MyProcess {
 		else if (oo.getStatus() == -3){
 			procOrder(1, oo);
 		}
-		else if (oo.getStatus() == 4){
-			procOrder(2, oo);
-		}
+//		else if (oo.getStatus() == 4){
+//			procOrder(2, oo);
+//		}
 		// TODO
 		// order should be added to database here.
 		return ret;

@@ -1,9 +1,19 @@
+/*
+ * Author   : Zhou Cheng
+ * Date     : 2014-6-8
+ * Project  : BrokerServer
+ * Filename : OriginOrderFIXHelper.java
+ * 
+ * All rights reserved.
+ */
 package util;
+
+import java.util.Date;
 
 import entity.OriginOrder;
 
 public class OriginOrderFIXHelper {
-	//private String broker_id = "1";
+	// private String broker_id = "1";
 
 	public static String OriginOrder2Fix(OriginOrder oo) {
 		return "";
@@ -20,8 +30,7 @@ public class OriginOrderFIXHelper {
 		oo.setStatus(Integer.parseInt(mf.getTag((init_tag + 4))));
 		oo.setLeavesqty(oo.getQuantity());
 		oo.setCumQtyl(0);
-		//TODO
-		oo.setDate(null);
+		oo.setDate(new Date(System.currentTimeMillis()));
 		return oo;
 	}
 }
