@@ -39,6 +39,7 @@ public class MyThread extends Thread {
 			data = MyAES.decrypt(data, password);
 			
 			// 0 means the future id.
+			// FIX need be analysis here
 			MyProcess process = processes.get(0);
 			if (null == process) {
 				MyAddProcess.add(0, processes);
