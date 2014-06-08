@@ -8,6 +8,9 @@
  */
 package util;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Hashtable;
@@ -34,7 +37,7 @@ public class MyProcess {
 		// TODO
 		// processs the data to origin data;
 		// if is a Buy, Sell or Revocation, go to the procOrder function.
-		// order should be added to database here.
+		// origin order should be added to database here.
 		return ret;
 	}
 
@@ -73,10 +76,10 @@ public class MyProcess {
 							.getDate().after(pOrder.getDate()))) {
 				Collections.swap(buyQuene, f, p);
 				makeBuyHeap(f);
-				return ;
+				return;
 			}
 		}
-		
+
 		int lc = 2 * p;
 		if (lc >= size) // leaf node
 			return;
@@ -96,8 +99,8 @@ public class MyProcess {
 			}
 		}
 		if (pOrder.getPrice() < cOrder.getPrice()
-				|| (pOrder.getPrice() == cOrder.getPrice() && pOrder
-						.getDate().after(cOrder.getDate()))) {
+				|| (pOrder.getPrice() == cOrder.getPrice() && pOrder.getDate()
+						.after(cOrder.getDate()))) {
 			Collections.swap(buyQuene, p, c);
 			makeBuyHeap(c);
 		}
@@ -116,10 +119,10 @@ public class MyProcess {
 							.getDate().after(pOrder.getDate()))) {
 				Collections.swap(sellQuene, f, p);
 				makeSellHeap(f);
-				return ;
+				return;
 			}
 		}
-		
+
 		int lc = 2 * p;
 		if (lc >= size) // leaf node
 			return;
@@ -139,8 +142,8 @@ public class MyProcess {
 			}
 		}
 		if (pOrder.getPrice() > cOrder.getPrice()
-				|| (pOrder.getPrice() == cOrder.getPrice() && pOrder
-						.getDate().after(cOrder.getDate()))) {
+				|| (pOrder.getPrice() == cOrder.getPrice() && pOrder.getDate()
+						.after(cOrder.getDate()))) {
 			Collections.swap(sellQuene, p, c);
 			makeSellHeap(c);
 		}
@@ -170,26 +173,60 @@ public class MyProcess {
 				// update sell order
 				sell.setCumQtyl(sell.getCumQtyl() + qty);
 				sell.setLeavesqty(sell.getQuantity() - sell.getCumQtyl());
+				sell.setStatus(-2);
 				if (0 == sell.getLeavesqty()) {
 					sellQuene.set(1, sellQuene.get(sellQuene.size() - 1));
 					sellQuene.remove(sellQuene.size() - 1);
 					makeSellHeap(1);
+					sell.setStatus(0);
 					orders.remove(sell.getId());
 				}
 				// update buy order
 				buy.setCumQtyl(buy.getCumQtyl() + qty);
 				buy.setLeavesqty(buy.getQuantity() - buy.getCumQtyl());
+				buy.setStatus(2);
 				if (0 == buy.getLeavesqty()) {
 					buyQuene.set(1, buyQuene.get(buyQuene.size() - 1));
 					buyQuene.remove(buyQuene.size() - 1);
 					makeBuyHeap(1);
+					buy.setStatus(0);
 					orders.remove(buy.getId());
 				}
 
-				// TODO
-				// Add fOrder to Dayabase
-				// Update buy to Dayabase
-				// Update sell to Dayabase
+				MyJDBC jdbc = new MyJDBC("BrokerServer");
+				Connection conn = jdbc.getConnection();
+				String sql = null;
+				PreparedStatement pst = null;
+				try {
+					// Add fOrder to Dayabase
+					sql = "insert into BrokerServer.FinalOrder (osid, obid, quantity, price, status) values (?, ?, ?, ?, ?)";
+					pst = conn.prepareStatement(sql);
+					pst.setInt(1, fOrder.getOsid());
+					pst.setInt(2, fOrder.getObid());
+					pst.setInt(3, fOrder.getQuantity());
+					pst.setInt(4, fOrder.getPrice());
+					pst.setInt(5, fOrder.getStatus());
+					pst.executeUpdate();
+					pst.close();
+					// Update buy to Dayabase
+					sql = "update BrokerServer.OriginOrder set BrokerServer.OriginOrder.cumQtyl = ?, BrokerServer.OriginOrder.leavesqty = ?, BrokerServer.OriginOrder.status = ? where BrokerServer.OriginOrder.id = ?";
+					pst = conn.prepareStatement(sql);
+					pst.setInt(1, buy.getCumQtyl());
+					pst.setInt(2, buy.getLeavesqty());
+					pst.setInt(3, buy.getStatus());
+					pst.setInt(4, buy.getId());
+					pst.executeUpdate();
+					// Update sell to Dayabase
+					pst.setInt(1, sell.getCumQtyl());
+					pst.setInt(2, sell.getLeavesqty());
+					pst.setInt(3, sell.getStatus());
+					pst.setInt(4, sell.getId());
+					pst.executeUpdate();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				} finally {
+					jdbc.close(conn, pst, null);
+				}
 				isMatched = true;
 			}
 		} catch (Exception e) {
@@ -199,3 +236,4 @@ public class MyProcess {
 			matchOrder();
 	}
 }
+
