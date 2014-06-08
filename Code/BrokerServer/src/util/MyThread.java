@@ -40,6 +40,8 @@ public class MyThread extends Thread {
 			
 			// 0 means the future id.
 			MyProcess process = processes.get(0);
+			if (null == process)
+				process = new MyProcess();
 			String ret = process.procData(data);
 			processes.put(0, process);
 			

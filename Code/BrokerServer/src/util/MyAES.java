@@ -1,4 +1,3 @@
-package util;
 /*
  * Author   : Zhou Cheng
  * Date     : 2014-6-6
@@ -7,6 +6,8 @@ package util;
  * 
  * All rights reserved.
  */
+package util;
+
 import java.security.SecureRandom;
 
 import javax.crypto.Cipher;
