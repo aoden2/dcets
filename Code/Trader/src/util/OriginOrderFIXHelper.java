@@ -18,7 +18,7 @@ public class OriginOrderFIXHelper {
 	public static List<OriginOrder> parseOriginOrder(String fixData){
 		List<OriginOrder> oos = new ArrayList<OriginOrder>();
 		MyFIX mf = new MyFIX(fixData);
-		int init_tag = 101;
+		int init_tag = 100;
 		while (mf.getTag(init_tag) != null){
 			OriginOrder oo = new OriginOrder();
 			oo.setFid(Integer.parseInt(mf.getTag((init_tag+1))));
