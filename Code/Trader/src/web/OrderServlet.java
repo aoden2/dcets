@@ -42,33 +42,13 @@ public class OrderServlet extends HttpServlet {
 				txt = txt
 						+ "<tr class=\"odd gradeX\">"
 						+ "<td class=\"center\"> SEP14</td>"
-						+ "<td onclick=\"orderSell(520);\" class=\"center\"> ABC</td>"
-						+ "<td onclick=\"orderSell(520);\" class=\"center\"> 5</td>"
-						+ "<td onclick=\"orderSell(520);\" class=\"center\"> 1240</td>"
-						+ "<td onclick=\"orderBuy(886);\"class=\"center\"> 1246</td>"
-						+ "<td onclick=\"orderBuy(886);\"class=\"center\"> 10</td>"
-						+ "<td onclick=\"orderBuy(886);\"class=\"center\"> ABC</td>"
-						+ "<td class=\"center\"> 1241</td>" + "</tr>";/*
-																	 * +
-																	 * "<tr class=\"even gradeC\">"
-																	 * +
-																	 * "<td class=\"center\"> SEP14</td>"
-																	 * +
-																	 * "<td class=\"center\"> ABC</td>"
-																	 * +
-																	 * "<td class=\"center\"> 5</td>"
-																	 * +
-																	 * "<td class=\"center\"> 1240</td>"
-																	 * +
-																	 * "<td class=\"center\"> 1246</td>"
-																	 * +
-																	 * "<td class=\"center\"> 10</td>"
-																	 * +
-																	 * "<td class=\"center\"> ABC</td>"
-																	 * +
-																	 * "<td class=\"center\"> 1241</td>"
-																	 * + "</tr>"
-																	 */
+						+ "<td onclick=\"FillOrder(1,1,'Gold','SEP14','ABC',5,1240);\" class=\"center\"> ABC</td>"
+						+ "<td onclick=\"FillOrder(1,1,'Gold','SEP14','ABC',5,1240);\" class=\"center\"> 5</td>"
+						+ "<td onclick=\"FillOrder(1,1,'Gold','SEP14','ABC',5,1240);\" class=\"center\"> 1240</td>"
+						+ "<td onclick=\"FillOrder(1,0,'Gold','SEP14','BC1',10,1246);\"class=\"center\"> 1246</td>"
+						+ "<td onclick=\"FillOrder(1,0,'Gold','SEP14','BC1',10,1246);\"class=\"center\"> 10</td>"
+						+ "<td onclick=\"FillOrder(1,0,'Gold','SEP14','BC1',10,1246);\"class=\"center\"> BC1</td>"
+						+ "<td class=\"center\"> 1241</td>" + "</tr>";
 			}
 			txt += "</tbody>";
 			if (id == -1) {

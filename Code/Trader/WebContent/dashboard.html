@@ -26,51 +26,71 @@
   <![endif]-->
   
   <script type="text/javascript">
-  		var item_id=-1;  
+  		var item_id=-1; 
+  		 
         $(function () {
-            GetOrders();
-            GetBrokers();  
+            GetItems();  
             setInterval("GetOrders()", 5000); //每隔5秒刷新订单信息
-        });  
-        function GetOrders() { //获取最新点击量  
-             
-              
+        });
+          
+        function GetOrders() {              
             $.ajax({  
                 type: "get",  
                 url: "OrderServlet",  
                 data:{id:item_id},  
                 success: function (str) {  
-                	$("#example").html(str);
-                	                      
+                	$("#example").html(str);                	                      
                 }  
             });  
         }
-        function GetBrokers() { //获取最新点击量  
-            
-            
+        
+        function GetBrokers() {            
             $.ajax({  
                 type: "get",  
-                url: "BrokerServlet",  
-                  
+                url: "BrokerServlet",                   
                 success: function (str) {
-                	$("#broker-select").html(str);
-                	                     
+                	$("#broker-select").html(str);                	                     
                 }  
             });  
-        }  
-        function orderSell(x) {
+        }
+          
+        function GetItems() {             
+            $.ajax({  
+                type: "get",  
+                url: "ItemServlet",                  
+                success: function (str) {
+                	$("#item-select").html(str);                     
+                }  
+            });  
+        }
+
+        function sendOrder(){ //发送订单
+            var opt=$("input[name='rgroup']:checked").val();
+            var itemid=$("#order-form-item").value;
+            var brk=$("#broker-select").value;
+            var prd=$("#order-form-period").value;
+            var qty=$("#order-form-qty").value;
+            var prc=$("#order-form-price").value;
+        	$.ajax({  
+                type: "post",  
+                url: "ProcessOrderServlet",
+                data:{operation:opt,id:itemid,broker:brk,quantity:qty,price:prc,prd:period},                  
+                success: function (str) {
+                	                     
+                }  
+            }); 
+        }
+        
+        function FillOrder(itemid,opt,item,prd,brk,qty,prc) {
         	$( "#modal-dialog" ).dialog( "open" );
-        	document.getElementById("order-form-sell").checked = true; 
-        	document.getElementById("order-form-item").value = x;
-        	document.getElementById("order-form-qty").value = x;
-			document.getElementById("order-form-price").value = x;
-            }
-        function orderBuy(x) {
-        	$( "#modal-dialog" ).dialog( "open" );
-        	document.getElementById("order-form-buy").checked = true;   
-        	document.getElementById("order-form-item").value = x;
-        	document.getElementById("order-form-qty").value = x;
-			document.getElementById("order-form-price").value = x;
+        	if(opt==1)
+        	document.getElementById("order-form-sell").checked = true;
+        	else document.getElementById("order-form-buy").checked = true;
+        	$("#order-form-item").html("<option value="+itemid+" selected=\"selected\">"+item+"</option>");
+        	$("#broker-select").html("<option value="+brk+" selected=\"selected\">"+brk+"</option>");
+        	document.getElementById("order-form-period").value = prd;
+        	document.getElementById("order-form-qty").value = qty;
+			document.getElementById("order-form-price").value = prc;
             }        
     </script>
 </head>
@@ -154,13 +174,11 @@
       <div class="box grid_3">
         <div class="box-head"><h2>Simple Panel</h2></div>
         <div class="box-content">
-          <p>This is a simple panel. All panels in Adminity are collapsible by clicking on the header.
-          <br>
-          Creating a panel like this one is very easy, 
-          you only need 3 divs with classes 'box', 'box-head' and 'box-content'.
-          <br><br>
-          Adminity also includes a styler. Open it by clicking the eye icon near the logo. A tooltip will tell you what color each colorpicker changes.<br><br>
-          <input type="button" id="query-gold" class="button purple" value="Gold" >
+          <p>请选择商品          
+              <select id="item-select" onchange="item_id=this.value;GetOrders();return false;">                
+              </select>
+            <br><br>          
+           <input type="button" class="button green" value="Committed Order" onclick="window.open('committed.html')">
           <input type="button" id="open-modal-dialog" class="button yellow" value="Initiate Order" >
           </p>
         </div>
@@ -188,11 +206,14 @@
       <div id="modal-dialog" title="Sample Modal Dialog">
       <div class="form-row">
             <label class="form-label">Operation</label>
-            <input id='order-form-buy' name='rgroup' type='radio' value='radio1' />Buy
-            <input id='order-form-sell' checked='checked' name='rgroup' type='radio' value='radio2' />Sell
+            <input id='order-form-buy' name='rgroup' type='radio' value=0 />Buy
+            <input id='order-form-sell' checked='checked' name='rgroup' type='radio' value=1 />Sell
           </div>
       <div class="form-row">
-           <p class="form-label">Item</p><div class="form-item"><input id='order-form-item' type="text" /></div></div>
+           <p class="form-label">Item</p><select id="order-form-item">                
+              </select></div>
+      <div class="form-row">
+           <p class="form-label">Period</p><div class="form-item"><input id='order-form-period' type="text" /></div></div>
       <div class="form-row">
             <label class="form-label">Broker</label>
             <div class="form-item">
@@ -207,8 +228,7 @@
        <div class="form-row">
        		<input type='checkbox' value='check1' />I confirm the trade is correct
             </div>
-       <input type="button" class="button green" value="OK">
-       <input type="button" class="button red" value="Cancel">
+       <input type="button" class="button green" value="OK" onclick="sendOrder()">
      </div>
        
       <div class="box grid_12">
@@ -252,19 +272,20 @@
       $( "#modal-dialog" ).dialog({
           autoOpen: false,
           resizable: false,
-          modal: true,
-          
+          modal: true          
         });
 
-        $( "#open-modal-dialog" ).click(function() {
-          $( "#modal-dialog" ).dialog( "open" );
+        $( "#open-modal-dialog" ).click(function() {        	
+          GetBrokers();
+          $("#order-form-item").html($("#item-select").html());          
+          document.getElementById("order-form-period").value = "";
+      	  document.getElementById("order-form-qty").value = "";
+		  document.getElementById("order-form-price").value = "";
+		  $( "#modal-dialog" ).dialog( "open" );
           return false;
         });
 
-        $( "#query-gold" ).click(function() {
-            item_id=1;
-            return false;
-          });
+        
   });/* for the flot chart demo */
 
   $('#example').dataTable( {
