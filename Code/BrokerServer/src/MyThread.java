@@ -34,19 +34,17 @@ public class MyThread extends Thread {
 
 	public void run() {
 		try {
-			System.out.println("Enter thread run.");
 			String data = is.readLine();
 			data = MyAES.decrypt(data, password);
-
 			MyFIX mf = new MyFIX(data);
 			int fid = Integer.parseInt(mf.getTag(101));
+			String ret = null;
 			MyProcess process = processes.get(fid);
 			if (null == process) {
 				MyAddProcess.add(fid, processes);
 				process = processes.get(fid);
 			}
-			String ret = process.procData(data);
-			
+			ret = process.procData(data);
 			ret = MyAES.encrypt(ret, password);
 			os.println(ret);
 			os.flush();

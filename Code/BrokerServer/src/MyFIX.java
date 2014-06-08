@@ -35,7 +35,7 @@ public class MyFIX {
 		con = new LinkedHashMap<String, String>();
 		int check = data.indexOf("^10=");
 		data = data.substring(0, check);
-		String[] tags = data.split("^");
+		String[] tags = data.split("\\^");
 		for (int i = 0, j = tags.length; i < j; i++) {
 			String[] t = tags[i].split("=");
 			setTag(Integer.valueOf(t[0]), t[1]);

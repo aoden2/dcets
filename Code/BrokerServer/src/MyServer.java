@@ -28,6 +28,7 @@ public class MyServer extends Thread {
 	}
 	
 	public void run() {
+		System.out.println("Enter MyServer"); // debug
 		while (true) {
 			try {
 				socket = server.accept();
