@@ -7,7 +7,6 @@
  * All rights reserved.
  */
 
-
 import java.util.Hashtable;
 
 public class MyAddProcess {
