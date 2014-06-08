@@ -1,24 +1,20 @@
+/*
+ * Author   : Zhou Cheng
+ * Date     : 2014-6-8
+ * Project  : BrokerServer
+ * Filename : FinalOrder.java
+ * 
+ * All rights reserved.
+ */
 package entity;
 
 public class FinalOrder {
 	private int id;
-	private int oid;
+	private int osid; // origin sell order id
+	private int obid; // origin buy order id
 	private int quantity;
 	private int price;
 	private int status;
-
-	public FinalOrder() {
-		super();
-	}
-
-	public FinalOrder(int id, int oid, int quantity, int price, int status) {
-		super();
-		this.id = id;
-		this.oid = oid;
-		this.quantity = quantity;
-		this.price = price;
-		this.status = status;
-	}
 
 	public int getId() {
 		return id;
@@ -28,12 +24,20 @@ public class FinalOrder {
 		this.id = id;
 	}
 
-	public int getOid() {
-		return oid;
+	public int getOsid() {
+		return osid;
 	}
 
-	public void setOid(int oid) {
-		this.oid = oid;
+	public void setOsid(int osid) {
+		this.osid = osid;
+	}
+
+	public int getObid() {
+		return obid;
+	}
+
+	public void setObid(int obid) {
+		this.obid = obid;
 	}
 
 	public int getQuantity() {

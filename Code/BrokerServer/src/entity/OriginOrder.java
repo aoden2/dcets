@@ -1,27 +1,22 @@
+/*
+ * Author   : Zhou Cheng
+ * Date     : 2014-6-8
+ * Project  : BrokerServer
+ * Filename : OriginOrder.java
+ * 
+ * All rights reserved.
+ */
 package entity;
 
 public class OriginOrder {
 	private int id;
-	private int fid;
-	private int bid;
-	private int quantity;
-	private int price;
+	private int fid; // future id
+	private int tid; // trader id
+	private int quantity; // 总量
+	private int cumQtyl; // 成交量
+	private int leavesqty; // 剩下未成交量
+	private int price; // 可以接受的报价
 	private int status;
-
-	public OriginOrder() {
-		super();
-	}
-
-	public OriginOrder(int id, int fid, int bid, int quantity, int price,
-			int status) {
-		super();
-		this.id = id;
-		this.fid = fid;
-		this.bid = bid;
-		this.quantity = quantity;
-		this.price = price;
-		this.status = status;
-	}
 
 	public int getId() {
 		return id;
@@ -39,12 +34,12 @@ public class OriginOrder {
 		this.fid = fid;
 	}
 
-	public int getBid() {
-		return bid;
+	public int getTid() {
+		return tid;
 	}
 
-	public void setBid(int bid) {
-		this.bid = bid;
+	public void setTid(int tid) {
+		this.tid = tid;
 	}
 
 	public int getQuantity() {
@@ -53,6 +48,22 @@ public class OriginOrder {
 
 	public void setQuantity(int quantity) {
 		this.quantity = quantity;
+	}
+
+	public int getCumQtyl() {
+		return cumQtyl;
+	}
+
+	public void setCumQtyl(int cumQtyl) {
+		this.cumQtyl = cumQtyl;
+	}
+
+	public int getLeavesqty() {
+		return leavesqty;
+	}
+
+	public void setLeavesqty(int leavesqty) {
+		this.leavesqty = leavesqty;
 	}
 
 	public int getPrice() {
