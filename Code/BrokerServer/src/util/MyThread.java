@@ -35,6 +35,7 @@ public class MyThread extends Thread {
 
 	public void run() {
 		try {
+			System.out.println("Enter thread run.");
 			String data = is.readLine();
 			data = MyAES.decrypt(data, password);
 
