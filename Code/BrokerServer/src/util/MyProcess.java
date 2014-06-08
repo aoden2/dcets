@@ -46,7 +46,6 @@ public class MyProcess {
 		}
 		// TODO
 		// order should be added to database here.
-
 		return ret;
 	}
 
