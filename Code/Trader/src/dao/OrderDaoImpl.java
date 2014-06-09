@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import entity.OriginOrder;
 import entity.BrokerInfo;
+import entity.TraderOrder;
 import util.*;
 import dao.BrokerDao;
 
@@ -13,8 +14,8 @@ public class OrderDaoImpl implements OrderDao{
 		List<OriginOrder> oos = new ArrayList<OriginOrder>();
 		return oos;
 	}
-	public List<OriginOrder> getOrdersByFutureId(int fid){
-		List<OriginOrder> oos = new ArrayList<OriginOrder>();
+	public List<TraderOrder> getOrdersByFutureName(String name){
+		List<TraderOrder> oos = new ArrayList<TraderOrder>();
 		return oos;
 	}
 	public OriginOrder initOriginOrder(int fid, int bid, int quantity, int price, int status){
