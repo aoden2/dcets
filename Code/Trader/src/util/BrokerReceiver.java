@@ -38,7 +38,7 @@ public class BrokerReceiver {
 	 * Select 5 sell & 5 buy
 	 */
 	private static List<TraderOrder> selectOrder(List<TraderOrder> l) {
-		List<TraderOrder> ans = new ArrayList<>();
+		List<TraderOrder> ans = new ArrayList<TraderOrder>();
 		String nowPeriod = "";
 		int i = 0;
 		int j = 0;
@@ -84,7 +84,7 @@ public class BrokerReceiver {
 	}
 
 	public static List<TraderOrder> mergeOrder(List<List<TraderOrder>> l) {
-		List<TraderOrder> ans = new ArrayList<>();
+		List<TraderOrder> ans = new ArrayList<TraderOrder>();
 		for (int i = 0; i < l.size(); i++)
 			ans.addAll(l.get(i));
 		ans = sortByPeriod(ans, 0, ans.size() - 1);
