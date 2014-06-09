@@ -17,13 +17,14 @@ public class MyFIX {
 	LinkedHashMap<String, String> fix = null;
 	LinkedHashMap<String, String> con = null;
 
-	public MyFIX(String MsgType, String SenderCompID, String TargetCompID,
+	public MyFIX(String MsgType, /* String SenderCompID, */String TargetCompID,
 			int MsgSeqNum) {
 		fix = new LinkedHashMap<String, String>();
 		fix.put("8", "FIX.4.2");
 		fix.put("9", "0");
 		fix.put("35", MsgType);
-		fix.put("49", SenderCompID);
+		// fix.put("49", SenderCompID);
+		fix.put("49", "10010");
 		fix.put("56", TargetCompID);
 		fix.put("34", Integer.toString(MsgSeqNum));
 		fix.put("52", "2014060714:14:14");
@@ -86,7 +87,7 @@ public class MyFIX {
 		date = formatter.format(curDate);
 		return date;
 	}
-	
+
 	public static String getDateStr(Date d) {
 		String date = null;
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHH:mm:ss");

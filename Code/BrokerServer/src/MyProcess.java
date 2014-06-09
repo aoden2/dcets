@@ -34,7 +34,7 @@ public class MyProcess {
 	}
 
 	public String procFIX(MyFIX mf) {
-		MyFIX ret = new MyFIX(mf.getTag(35), "10010", mf.getTag(49), 2);
+		MyFIX ret = new MyFIX(mf.getTag(35), mf.getTag(49), 2);
 		if (mf.getTag(35) == "1") {
 			OriginOrder oo = EntityFIXHelper.FIX2Order(mf);
 			oo.setStatus(3);
