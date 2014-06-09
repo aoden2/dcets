@@ -5,8 +5,9 @@ import java.util.List;
 
 import entity.OriginOrder;
 public class OriginOrderFIXHelper {
+	private static String comp_id = "1";
 	public static String OriginOrder2Fix(OriginOrder oo){
-		MyFIX mf = new MyFIX("OriginOrder", "1", String.valueOf(oo.getBid()), 1);
+		MyFIX mf = new MyFIX("OriginOrder", comp_id, String.valueOf(oo.getBid()), 1);
 		mf.setTag(101, String.valueOf(oo.getFid()));
 		mf.setTag(102, String.valueOf(oo.getQuantity()));
 		mf.setTag(103, String.valueOf(oo.getPrice()));
