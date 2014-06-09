@@ -36,13 +36,13 @@ public class MyProcess {
 	public String procFIX(MyFIX mf) {
 		MyFIX ret = new MyFIX(mf.getTag(35), mf.getTag(49), 2);
 		if (mf.getTag(35) == "1") {
-			OriginOrder oo = EntityFIXHelper.FIX2Order(mf);
+			OriginOrder oo = MyFIX.FIX2Order(mf);
 			oo.setStatus(3);
 			addOrderToDatabase(oo);
 			procOrder(0, oo);
 			ret.setTag(101, "0");
 		} else if (mf.getTag(35) == "2") {
-			OriginOrder oo = EntityFIXHelper.FIX2Order(mf);
+			OriginOrder oo = MyFIX.FIX2Order(mf);
 			oo.setStatus(-3);
 			addOrderToDatabase(oo);
 			procOrder(1, oo);

@@ -94,6 +94,18 @@ public class MyFIX {
 		date = formatter.format(d);
 		return date;
 	}
+	
+	public static OriginOrder FIX2Order(MyFIX mf) {
+		OriginOrder oo = new OriginOrder();
+		oo.setTid(Integer.parseInt(mf.getTag(49)));
+		oo.setFid(Integer.parseInt(mf.getTag(101)));
+		oo.setQuantity(Integer.parseInt(mf.getTag(102)));
+		oo.setCumQtyl(0);
+		oo.setLeavesqty(oo.getQuantity());
+		oo.setPrice(Integer.parseInt(mf.getTag(103)));
+		oo.setDate(new Date(System.currentTimeMillis()));
+		return oo;
+	}
 
 	public static boolean checkData(String data) {
 		int check = data.indexOf("^10=");
