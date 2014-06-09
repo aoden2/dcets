@@ -35,23 +35,24 @@ public class MyProcess {
 
 	public String procFIX(MyFIX mf) {
 		MyFIX ret = new MyFIX(mf.getTag(35), mf.getTag(49), 2);
-		if (mf.getTag(35) == "1") {
+		int msgType = Integer.parseInt(mf.getTag(35));
+		if (msgType == 1) {
 			OriginOrder oo = MyFIX.FIX2Order(mf);
 			oo.setStatus(3);
 			addOrderToDatabase(oo);
 			procOrder(0, oo);
 			ret.setTag(101, "0");
-		} else if (mf.getTag(35) == "2") {
+		} else if (msgType == 2) {
 			OriginOrder oo = MyFIX.FIX2Order(mf);
 			oo.setStatus(-3);
 			addOrderToDatabase(oo);
 			procOrder(1, oo);
 			ret.setTag(101, "0");
-		} else if (mf.getTag(35) == "3") {
+		} else if (msgType == 3) {
 			Integer i = Integer.parseInt(mf.getTag(102));
 			procOrder(2, i);
 			ret.setTag(101, "0");
-		} else if (mf.getTag(35) == "4") {
+		} else if (msgType == 4) {
 			ret.setTag(110, "1");
 			procOrder(3, ret);
 		}
@@ -257,7 +258,7 @@ public class MyProcess {
 			OriginOrder sell = orders.get(topSell);
 			OriginOrder buy = orders.get(topBuy);
 			if (buy.getPrice() >= sell.getPrice()) {
-				int qty = Math.max(sell.getLeavesqty(), buy.getLeavesqty());
+				int qty = Math.min(sell.getLeavesqty(), buy.getLeavesqty());
 				int price = 0;
 				if (sell.getDate().before(buy.getDate()))
 					price = sell.getPrice();
