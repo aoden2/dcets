@@ -38,8 +38,8 @@ public class MyThread extends Thread {
 		try {
 			String data = is.readLine();
 			String retData = null;
-			data = MyAES.decrypt(data, password);
-			MyFIX mf = new MyFIX(data);
+			String decData = MyAES.decrypt(data, password);
+			MyFIX mf = new MyFIX(decData);
 			int msgType = Integer.parseInt(mf.getTag(35));
 			if (msgType == 1 || msgType == 2 || msgType == 3
 					|| msgType == 4) {
