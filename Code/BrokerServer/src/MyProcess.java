@@ -18,16 +18,16 @@ import java.util.Hashtable;
 import java.util.List;
 
 public class MyProcess {
-	List<Integer> sellQuene = null;
-	List<Integer> buyQuene = null;
+	List<Integer> sellQueue = null;
+	List<Integer> buyQueue = null;
 	Hashtable<Integer, OriginOrder> orders = null;
 
 	public MyProcess() {
-		sellQuene = new ArrayList<Integer>();
-		buyQuene = new ArrayList<Integer>();
+		sellQueue = new ArrayList<Integer>();
+		buyQueue = new ArrayList<Integer>();
 		orders = new Hashtable<Integer, OriginOrder>();
-		sellQuene.add(0);
-		buyQuene.add(0);
+		sellQueue.add(0);
+		buyQueue.add(0);
 	}
 
 	public String procData(String data) {
@@ -53,15 +53,15 @@ public class MyProcess {
 		// Buy
 		if (0 == action) {
 			orders.put(order.getId(), order);
-			buyQuene.add(order.getId());
-			makeBuyHeap(buyQuene.size() - 1);
+			buyQueue.add(order.getId());
+			makeBuyHeap(buyQueue.size() - 1);
 			matchOrder();
 		}
 		// Sell
 		else if (1 == action) {
 			orders.put(order.getId(), order);
-			sellQuene.add(order.getId());
-			makeSellHeap(sellQuene.size() - 1);
+			sellQueue.add(order.getId());
+			makeSellHeap(sellQueue.size() - 1);
 			matchOrder();
 		}
 		// Revocation
@@ -102,17 +102,17 @@ public class MyProcess {
 	}
 	
 	private void makeBuyHeap(int p) {
-		int size = buyQuene.size();
+		int size = buyQueue.size();
 		if (p >= size)
 			return;
 		if (p != 1) {
 			int f = p / 2;
-			OriginOrder fOrder = orders.get(buyQuene.get(f));
-			OriginOrder pOrder = orders.get(buyQuene.get(p));
+			OriginOrder fOrder = orders.get(buyQueue.get(f));
+			OriginOrder pOrder = orders.get(buyQueue.get(p));
 			if (fOrder.getPrice() < pOrder.getPrice()
 					|| (fOrder.getPrice() == pOrder.getPrice() && fOrder
 							.getDate().after(pOrder.getDate()))) {
-				Collections.swap(buyQuene, f, p);
+				Collections.swap(buyQueue, f, p);
 				makeBuyHeap(f);
 				return;
 			}
@@ -123,12 +123,12 @@ public class MyProcess {
 			return;
 		int rc = lc + 1;
 		int c = lc;
-		OriginOrder pOrder = orders.get(buyQuene.get(p));
-		OriginOrder lcOrder = orders.get(buyQuene.get(lc));
+		OriginOrder pOrder = orders.get(buyQueue.get(p));
+		OriginOrder lcOrder = orders.get(buyQueue.get(lc));
 		OriginOrder rcOrder = null;
 		OriginOrder cOrder = lcOrder;
 		if (rc < size) {
-			rcOrder = orders.get(buyQuene.get(rc));
+			rcOrder = orders.get(buyQueue.get(rc));
 			if (lcOrder.getPrice() < rcOrder.getPrice()
 					|| (lcOrder.getPrice() == rcOrder.getPrice() && lcOrder
 							.getDate().after(rcOrder.getDate()))) {
@@ -139,23 +139,23 @@ public class MyProcess {
 		if (pOrder.getPrice() < cOrder.getPrice()
 				|| (pOrder.getPrice() == cOrder.getPrice() && pOrder.getDate()
 						.after(cOrder.getDate()))) {
-			Collections.swap(buyQuene, p, c);
+			Collections.swap(buyQueue, p, c);
 			makeBuyHeap(c);
 		}
 	}
 
 	private void makeSellHeap(int p) {
-		int size = sellQuene.size();
+		int size = sellQueue.size();
 		if (p >= size)
 			return;
 		if (p != 1) {
 			int f = p / 2;
-			OriginOrder fOrder = orders.get(sellQuene.get(f));
-			OriginOrder pOrder = orders.get(sellQuene.get(p));
+			OriginOrder fOrder = orders.get(sellQueue.get(f));
+			OriginOrder pOrder = orders.get(sellQueue.get(p));
 			if (fOrder.getPrice() > pOrder.getPrice()
 					|| (fOrder.getPrice() == pOrder.getPrice() && fOrder
 							.getDate().after(pOrder.getDate()))) {
-				Collections.swap(sellQuene, f, p);
+				Collections.swap(sellQueue, f, p);
 				makeSellHeap(f);
 				return;
 			}
@@ -166,12 +166,12 @@ public class MyProcess {
 			return;
 		int rc = lc + 1;
 		int c = lc;
-		OriginOrder pOrder = orders.get(sellQuene.get(p));
-		OriginOrder lcOrder = orders.get(sellQuene.get(lc));
+		OriginOrder pOrder = orders.get(sellQueue.get(p));
+		OriginOrder lcOrder = orders.get(sellQueue.get(lc));
 		OriginOrder rcOrder = null;
 		OriginOrder cOrder = lcOrder;
 		if (rc < size) {
-			rcOrder = orders.get(sellQuene.get(rc));
+			rcOrder = orders.get(sellQueue.get(rc));
 			if (lcOrder.getPrice() > rcOrder.getPrice()
 					|| (lcOrder.getPrice() == rcOrder.getPrice() && lcOrder
 							.getDate().after(rcOrder.getDate()))) {
@@ -182,7 +182,7 @@ public class MyProcess {
 		if (pOrder.getPrice() > cOrder.getPrice()
 				|| (pOrder.getPrice() == cOrder.getPrice() && pOrder.getDate()
 						.after(cOrder.getDate()))) {
-			Collections.swap(sellQuene, p, c);
+			Collections.swap(sellQueue, p, c);
 			makeSellHeap(c);
 		}
 	}
@@ -190,8 +190,8 @@ public class MyProcess {
 	private void matchOrder() {
 		boolean isMatched = false;
 		try {
-			int topSell = sellQuene.get(1);
-			int topBuy = buyQuene.get(1);
+			int topSell = sellQueue.get(1);
+			int topBuy = buyQueue.get(1);
 			OriginOrder sell = orders.get(topSell);
 			OriginOrder buy = orders.get(topBuy);
 			if (buy.getPrice() >= sell.getPrice()) {
@@ -213,8 +213,8 @@ public class MyProcess {
 				sell.setLeavesqty(sell.getQuantity() - sell.getCumQtyl());
 				sell.setStatus(-2);
 				if (0 == sell.getLeavesqty()) {
-					sellQuene.set(1, sellQuene.get(sellQuene.size() - 1));
-					sellQuene.remove(sellQuene.size() - 1);
+					sellQueue.set(1, sellQueue.get(sellQueue.size() - 1));
+					sellQueue.remove(sellQueue.size() - 1);
 					makeSellHeap(1);
 					sell.setStatus(0);
 					orders.remove(sell.getId());
@@ -224,8 +224,8 @@ public class MyProcess {
 				buy.setLeavesqty(buy.getQuantity() - buy.getCumQtyl());
 				buy.setStatus(2);
 				if (0 == buy.getLeavesqty()) {
-					buyQuene.set(1, buyQuene.get(buyQuene.size() - 1));
-					buyQuene.remove(buyQuene.size() - 1);
+					buyQueue.set(1, buyQueue.get(buyQueue.size() - 1));
+					buyQueue.remove(buyQueue.size() - 1);
 					makeBuyHeap(1);
 					buy.setStatus(0);
 					orders.remove(buy.getId());
