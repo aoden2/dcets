@@ -32,7 +32,7 @@ public class MyProcess {
 
 	public String procData(String data) {
 		String ret = new String();
-		OriginOrder oo = OriginOrderFIXHelper.parseOriginOrder(data);
+		OriginOrder oo = EntityFIXHelper.parseOriginOrder(data);
 		if (oo.getStatus() == 3){
 			addOrderToDatabase(oo);
 			procOrder(0, oo);
