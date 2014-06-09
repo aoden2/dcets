@@ -2,6 +2,7 @@ package web;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -9,13 +10,17 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import dao.BrokerDao;
+import entity.BrokerInfo;
+
 /**
- * Servlet implementation class BrokerServlet
+ * 拉取当前所有的broker名单
  */
 @WebServlet("/BrokerServlet")
 public class BrokerServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
+	private BrokerDao dao;
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -30,13 +35,13 @@ public class BrokerServlet extends HttpServlet {
         PrintWriter out = response.getWriter(); 
 
         try {            
-            String txt="<option value='option1'>ABC</option>"+
-          "<option value='option2'>BC1</option>"+
-            "<option value='option3'>BC2</option>"+
-            "<option value='option4'>BC3</option>";
-            
-            
-            //String t = new String(txt.getBytes("utf-8"),"iso-8859-1");
+        	String txt="";
+        	List<BrokerInfo> ls = dao.getAllBrokers();
+        	for(BrokerInfo b : ls){
+        		String name = b.getName();
+        		txt = txt
+        				+"<option value='"+name+"'>"+name+"</option>";
+        	}            
             out.println(txt);
             out.flush();
         } catch(Exception e){
