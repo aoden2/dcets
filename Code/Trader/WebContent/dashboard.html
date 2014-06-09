@@ -26,7 +26,7 @@
   <![endif]-->
   
   <script type="text/javascript">
-  		var item_id=-1; 
+  		var item_name=""; 
   		 
         $(function () {
             GetItems();  
@@ -37,7 +37,7 @@
             $.ajax({  
                 type: "get",  
                 url: "OrderServlet",  
-                data:{id:item_id},  
+                data:{name:item_name},  
                 success: function (str) {  
                 	$("#example").html(str);                	                      
                 }  
@@ -66,27 +66,28 @@
 
         function sendOrder(){ //发送订单
             var opt=$("input[name='rgroup']:checked").val();
-            var itemid=$("#order-form-item").value;
+            var itemname=$("#order-form-item").value;
             var brk=$("#broker-select").value;
             var prd=$("#order-form-period").value;
             var qty=$("#order-form-qty").value;
             var prc=$("#order-form-price").value;
+            $( "#modal-dialog" ).dialog( "close" );
         	$.ajax({  
                 type: "post",  
-                url: "ProcessOrderServlet",
-                data:{operation:opt,id:itemid,broker:brk,quantity:qty,price:prc,prd:period},                  
+                url: "SendOrderServlet",
+                data:{operation:opt,name:itemname,broker:brk,quantity:qty,price:prc,period:prd},                  
                 success: function (str) {
-                	                     
+                	     alert("success");                
                 }  
             }); 
         }
         
-        function FillOrder(itemid,opt,item,prd,brk,qty,prc) {
+        function FillOrder(opt,item,prd,brk,qty,prc) {
         	$( "#modal-dialog" ).dialog( "open" );
         	if(opt==1)
         	document.getElementById("order-form-sell").checked = true;
         	else document.getElementById("order-form-buy").checked = true;
-        	$("#order-form-item").html("<option value="+itemid+" selected=\"selected\">"+item+"</option>");
+        	$("#order-form-item").html("<option value="+item+" selected=\"selected\">"+item+"</option>");
         	$("#broker-select").html("<option value="+brk+" selected=\"selected\">"+brk+"</option>");
         	document.getElementById("order-form-period").value = prd;
         	document.getElementById("order-form-qty").value = qty;
@@ -175,7 +176,7 @@
         <div class="box-head"><h2>Simple Panel</h2></div>
         <div class="box-content">
           <p>请选择商品          
-              <select id="item-select" onchange="item_id=this.value;GetOrders();return false;">                
+              <select id="item-select" onchange="item_name=this.value;GetOrders();return false;">                
               </select>
             <br><br>          
            <input type="button" class="button green" value="Committed Order" onclick="window.open('committed.html')">

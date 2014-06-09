@@ -11,47 +11,33 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import dao.FutureDao;
+import dao.OrderDao;
+import entity.TraderOrder;
 
 /**
- * 获取商品名列表
+ * Servlet implementation class SendOrderServlet
  */
-@WebServlet("/ItemServlet")
-public class ItemServlet extends HttpServlet {
+@WebServlet("/SendOrderServlet")
+public class SendOrderServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
-	private FutureDao dao;
+	OrderDao dao;
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public ItemServlet() {
+    public SendOrderServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
-
-    protected void processRequest(HttpServletRequest request,
-            HttpServletResponse response)
-            throws ServletException, IOException {
-        PrintWriter out = response.getWriter(); 
-
-        try {    
-        	String txt = "<option value=''>未选择</option>";
-        	List<String> ls = new ArrayList<>();
-        	ls = dao.getAllFutureName();
-        	for(String s : ls){
-        		txt=txt
-        				+"<option value='"+s+"'>"+s+"</option>";
-        	}            
-            out.println(txt);
-            out.flush();
-        } catch(Exception e){
-        	e.printStackTrace();
-        }
-        finally {
-            out.close();
-        }
-    }
     
+    protected void processRequest(HttpServletRequest request,
+			HttpServletResponse response) throws ServletException, IOException {
+		//{operation:opt,name:itemname,broker:brk,quantity:qty,price:prc,period:prd}
+		String name = (String)request.getParameter("name");
+		
+			
+	}
+
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */

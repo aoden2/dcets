@@ -2,6 +2,7 @@ package web;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -36,7 +37,8 @@ public class BrokerServlet extends HttpServlet {
 
         try {            
         	String txt="";
-        	List<BrokerInfo> ls = dao.getAllBrokers();
+        	List<BrokerInfo> ls = new ArrayList<>();
+        	ls = dao.getAllBrokers();
         	for(BrokerInfo b : ls){
         		String name = b.getName();
         		txt = txt
