@@ -7,17 +7,20 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import client.httpRequest;
 import util.JDBCUtil;
+import util.WSParser;
 import entity.BrokerInfo;
 import entity.Future;
 
 public class FutureDaoImpl implements FutureDao {
 	private JDBCUtil jdbc = new JDBCUtil("dcetsT1");
 
+	@SuppressWarnings("resource")
 	public void refreshFutures(){
-		//String future_str = httpRequest.sendGet("http://59.78.3.25:8080/BrokerWebServer/services/getFuture", null);
+		String future_str = httpRequest.sendGet("http://59.78.3.25:8080/BrokerWebServer/services/getFuture", null);
+		List<Future> l = WSParser.parseAllFuture(future_str);
 		Connection conn = jdbc.getConnection();
-		System.out.println("get>!");
 		ResultSet rs = null;
 		PreparedStatement pst = null;
 		String sql = "";
@@ -28,6 +31,14 @@ public class FutureDaoImpl implements FutureDao {
 			sql = "create table future(id int primary key auto_increment,category varchar(255),name varchar(255),period varchar(80));";
 			pst = conn.prepareStatement(sql);
 			pst.execute();
+			for (int i=0;i<l.size(); i++){
+				sql = "insert into future(category, name, period) values(?,?,?);";
+				pst = conn.prepareStatement(sql);
+				pst.setString(1, l.get(i).getCategory());
+				pst.setString(2, l.get(i).getName());
+				pst.setString(3, l.get(i).getPeriod());
+				pst.execute();
+			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
