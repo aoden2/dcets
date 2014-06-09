@@ -14,6 +14,7 @@ import java.sql.Statement;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.Hashtable;
 import java.util.List;
 
@@ -21,6 +22,8 @@ public class MyProcess {
 	List<Integer> sellQueue = null;
 	List<Integer> buyQueue = null;
 	Hashtable<Integer, OriginOrder> orders = null;
+	int lastPrice = -1;
+	Date LastDate = new Date();
 
 	public MyProcess() {
 		sellQueue = new ArrayList<Integer>();
@@ -30,23 +33,24 @@ public class MyProcess {
 		buyQueue.add(0);
 	}
 
-	public String procData(String data) {
-		String ret = new String();
-		OriginOrder oo = EntityFIXHelper.parseOriginOrder(data);
-		if (oo.getStatus() == 3){
+	public String procFIX(MyFIX mf) {
+		MyFIX ret = new MyFIX(mf.getTag(35), "10010", mf.getTag(49), 2);
+		if (mf.getTag(35) == "1") {
+			OriginOrder oo = EntityFIXHelper.FIX2Order(mf);
+			oo.setStatus(3);
 			addOrderToDatabase(oo);
 			procOrder(0, oo);
-			// TODO add return msg.
-		}
-		else if (oo.getStatus() == -3){
+			ret.setTag(101, "0");
+		} else if (mf.getTag(35) == "2") {
+			OriginOrder oo = EntityFIXHelper.FIX2Order(mf);
+			oo.setStatus(-3);
 			addOrderToDatabase(oo);
 			procOrder(1, oo);
-			// TODO add return msg.
+			ret.setTag(101, "0");
 		}
-//		else if (oo.getStatus() == 4){
-//			procOrder(2, oo);
-//		}
-		return ret;
+		// TODO Revocation
+		// TODO Query Future
+		return ret.getFIX();
 	}
 
 	public synchronized int procOrder(int action, OriginOrder order) {
@@ -100,7 +104,7 @@ public class MyProcess {
 			jdbc.close(conn, pst, null);
 		}
 	}
-	
+
 	private void makeBuyHeap(int p) {
 		int size = buyQueue.size();
 		if (p >= size)
@@ -208,6 +212,9 @@ public class MyProcess {
 				fOrder.setPrice(price);
 				fOrder.setQuantity(qty);
 				fOrder.setStatus(0);
+				// uodate last record.
+				lastPrice = price;
+				LastDate = new Date(System.currentTimeMillis());
 				// update sell order
 				sell.setCumQtyl(sell.getCumQtyl() + qty);
 				sell.setLeavesqty(sell.getQuantity() - sell.getCumQtyl());
@@ -274,4 +281,3 @@ public class MyProcess {
 			matchOrder();
 	}
 }
-
