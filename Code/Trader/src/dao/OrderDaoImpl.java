@@ -4,7 +4,9 @@ import java.util.List;
 import java.util.ArrayList;
 
 import entity.OriginOrder;
+import entity.BrokerInfo;
 import util.*;
+import dao.BrokerDao;
 
 public class OrderDaoImpl implements OrderDao{
 	public List<OriginOrder> getAllOrders(){
@@ -26,10 +28,12 @@ public class OrderDaoImpl implements OrderDao{
 	}
 	public String sendOriginOrder(OriginOrder oo){
 		String rtn = "";
+		BrokerDao bd = new BrokerDaoImpl();
+		BrokerInfo broker = bd.getBrokerbyId(oo.getBid());
 		MyClient c = null;
 			try {
 				String data = OriginOrderFIXHelper.OriginOrder2Fix(oo);
-				c = new MyClient("127.0.0.1", 4700, "password");
+				c = new MyClient(broker.getIp(), broker.getPort(), broker.getPass());
 				rtn = c.send(data);
 			} catch(Exception e) {
 				System.out.println("Error : " + e);
