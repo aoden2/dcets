@@ -40,14 +40,21 @@ public class test extends HttpServlet {
 		//BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		while (true) {
 			try {
-				
-				OriginOrder oo = null;
-				OriginOrder oo2 = null;
-				OrderDao od = new OrderDaoImpl();
+				OriginOrder oo = new OriginOrder();
+				//OrderDao od = new OrderDaoImpl();
 				Random random1 = new Random();
 				System.out.println((random1.nextInt())%1000);
-				oo = od.initOriginOrder(1, 1, Math.abs((random1.nextInt())%1000)+1, Math.abs((random1.nextInt())%1000)+1, 3);
-				oo2 = od.initOriginOrder(1, 1, Math.abs((random1.nextInt())%1000)+1, Math.abs((random1.nextInt())%1000)+1, -3);
+				oo.setBid(1);
+				oo.setFid(1);
+				oo.setPrice(Math.abs((random1.nextInt())%1000)+1);
+				oo.setQuantity(Math.abs((random1.nextInt())%1000)+1);
+				oo.setStatus(3);
+				OriginOrder oo2 = new OriginOrder();
+				oo2.setBid(1);
+				oo2.setFid(1);
+				oo2.setPrice(Math.abs((random1.nextInt())%1000)+1);
+				oo2.setQuantity(Math.abs((random1.nextInt())%1000)+1);
+				oo2.setStatus(-3);
 				
 				String data = OriginOrderFIXHelper.OriginOrder2Fix(oo);
 				String data2 = OriginOrderFIXHelper.OriginOrder2Fix(oo2);
