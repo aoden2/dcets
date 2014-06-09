@@ -282,7 +282,7 @@ public class MyProcess {
 					sellQueue.set(1, sellQueue.get(sellQueue.size() - 1));
 					sellQueue.remove(sellQueue.size() - 1);
 					makeSellHeap(1);
-					sell.setStatus(1);
+					sell.setStatus(-1);
 					orders.remove(sell.getId());
 				}
 				// update buy order
@@ -293,7 +293,7 @@ public class MyProcess {
 					buyQueue.set(1, buyQueue.get(buyQueue.size() - 1));
 					buyQueue.remove(buyQueue.size() - 1);
 					makeBuyHeap(1);
-					buy.setStatus(-1);
+					buy.setStatus(1);
 					orders.remove(buy.getId());
 				}
 
