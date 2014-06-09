@@ -86,6 +86,13 @@ public class MyFIX {
 		date = formatter.format(curDate);
 		return date;
 	}
+	
+	public static String getDateStr(Date d) {
+		String date = null;
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHH:mm:ss");
+		date = formatter.format(d);
+		return date;
+	}
 
 	public static boolean checkData(String data) {
 		int check = data.indexOf("^10=");

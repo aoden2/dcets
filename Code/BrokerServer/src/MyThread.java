@@ -40,13 +40,11 @@ public class MyThread extends Thread {
 			String retData = null;
 			data = MyAES.decrypt(data, password);
 			MyFIX mf = new MyFIX(data);
-			if (Integer.parseInt(mf.getTag(35)) == 5) {
+			int msgType = Integer.parseInt(mf.getTag(35));
+			if (msgType == 5) {
 				// TODO Query database here.
-			}
-			else if (Integer.parseInt(mf.getTag(35)) == 1 ||
-					Integer.parseInt(mf.getTag(35)) == 2 ||
-					Integer.parseInt(mf.getTag(35)) == 3 ||
-					Integer.parseInt(mf.getTag(35)) == 4) {
+			} else if (msgType == 1 || msgType == 2 || msgType == 3
+					|| msgType == 4) {
 				int fid = Integer.parseInt(mf.getTag(101));
 				MyProcess process = processes.get(fid);
 				if (null == process) {
@@ -54,8 +52,7 @@ public class MyThread extends Thread {
 					process = processes.get(fid);
 				}
 				retData = process.procFIX(mf);
-			}
-			else {
+			} else {
 				retData = mf.getFIX();
 			}
 			retData = MyAES.encrypt(retData, password);
@@ -65,7 +62,7 @@ public class MyThread extends Thread {
 			os.close();
 			socket.close();
 		} catch (Exception e) {
-		    e.printStackTrace();
+			e.printStackTrace();
 		}
 	}
 }

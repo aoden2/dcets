@@ -47,15 +47,19 @@ public class MyProcess {
 			addOrderToDatabase(oo);
 			procOrder(1, oo);
 			ret.setTag(101, "0");
+		} else if (mf.getTag(35) == "3") {
+			// TODO Revocation
+		} else if (mf.getTag(35) == "4") {
+			ret.setTag(110, "1");
+			procOrder(3, ret);
 		}
-		// TODO Revocation
-		// TODO Query Future
 		return ret.getFIX();
 	}
 
-	public synchronized int procOrder(int action, OriginOrder order) {
+	public synchronized int procOrder(int action, Object obj) {//order) {
 		// Buy
 		if (0 == action) {
+			OriginOrder order = (OriginOrder) obj;
 			orders.put(order.getId(), order);
 			buyQueue.add(order.getId());
 			makeBuyHeap(buyQueue.size() - 1);
@@ -63,6 +67,7 @@ public class MyProcess {
 		}
 		// Sell
 		else if (1 == action) {
+			OriginOrder order = (OriginOrder) obj;
 			orders.put(order.getId(), order);
 			sellQueue.add(order.getId());
 			makeSellHeap(sellQueue.size() - 1);
@@ -70,7 +75,11 @@ public class MyProcess {
 		}
 		// Revocation
 		else if (2 == action) {
-			// TODO
+			// TODO Revocation
+		}
+		// Query Future
+		else if (3 == action) {
+			getLastCon((MyFIX) obj);
 		}
 		return 0;
 	}
@@ -279,5 +288,35 @@ public class MyProcess {
 		}
 		if (isMatched)
 			matchOrder();
+	}
+	
+	private void getLastCon(MyFIX mf) {
+		try {
+			if (buyQueue.size() < 2) {
+				mf.setTag(101, "-1");
+				mf.setTag(102, MyFIX.getCurDate());
+			}
+			else {
+				int i = buyQueue.get(1);
+				OriginOrder oo = orders.get(i);
+				mf.setTag(101, String.valueOf(oo.getPrice()));
+				mf.setTag(102, String.valueOf(oo.getLeavesqty()));
+			}
+			if (sellQueue.size() < 2) {
+				mf.setTag(103, "-1");
+				mf.setTag(104, MyFIX.getCurDate());
+			}
+			else {
+				int i = sellQueue.get(1);
+				OriginOrder oo = orders.get(i);
+				mf.setTag(103, String.valueOf(oo.getPrice()));
+				mf.setTag(104, String.valueOf(oo.getLeavesqty()));
+			}
+			mf.setTag(105, String.valueOf(lastPrice));
+			mf.setTag(106, MyFIX.getDateStr(LastDate));
+			mf.setTag(110, "0");
+		} catch(Exception e) {
+			System.out.println("Error : " + e);
+		}
 	}
 }
