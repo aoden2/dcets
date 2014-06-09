@@ -2,6 +2,8 @@ package web;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -9,13 +11,17 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import dao.OrderDao;
+import entity.TraderOrder;
+
 /**
- * Servlet implementation class OrderServlet
+ * 根据商品名拉取各period的行情
  */
 @WebServlet("/OrderServlet")
 public class OrderServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
+	private OrderDao dao;
 	/**
 	 * @see HttpServlet#HttpServlet()
 	 */
@@ -30,31 +36,39 @@ public class OrderServlet extends HttpServlet {
 
 		try {
 
-			int id = Integer.parseInt(request.getParameter("id"));
-			// 根据类型用ajax方式传送对应类型的电脑列表
-			// List<Computer> list =dao.PCList(type);
-			// String s = new String(type.getBytes("iso-8859-1"),"utf-8");
-			String txt = "<thead>" + "<tr>" + "<th>Period</th>"
+			String name = (String)request.getParameter("name");
+			List<TraderOrder> ls = new ArrayList<>();
+			String txt="<thead>" + "<tr>" + "<th>Period</th>"
 					+ "<th>Broker</th>" + "<th>Qty</th>" + "<th>Bid</th>"
 					+ "<th>Ask</th>" + "<th>Qty</th>" + "<th>Broker</th>"
 					+ "<th>Last</th>" + "</tr>" + "</thead>" + "<tbody>";
-			for (int i = 0; i < 10; i++) {
-				txt = txt
-						+ "<tr class=\"odd gradeX\">"
-						+ "<td class=\"center\"> SEP14</td>"
-						+ "<td onclick=\"FillOrder(1,1,'Gold','SEP14','ABC',5,1240);\" class=\"center\"> ABC</td>"
-						+ "<td onclick=\"FillOrder(1,1,'Gold','SEP14','ABC',5,1240);\" class=\"center\"> 5</td>"
-						+ "<td onclick=\"FillOrder(1,1,'Gold','SEP14','ABC',5,1240);\" class=\"center\"> 1240</td>"
-						+ "<td onclick=\"FillOrder(1,0,'Gold','SEP14','BC1',10,1246);\"class=\"center\"> 1246</td>"
-						+ "<td onclick=\"FillOrder(1,0,'Gold','SEP14','BC1',10,1246);\"class=\"center\"> 10</td>"
-						+ "<td onclick=\"FillOrder(1,0,'Gold','SEP14','BC1',10,1246);\"class=\"center\"> BC1</td>"
-						+ "<td class=\"center\"> 1241</td>" + "</tr>";
+			if(!name.equals("")){
+				ls=dao.getOrdersByFutureName(name);
+				for(TraderOrder o : ls){					
+					String prd = o.getPeriod(); 
+					String brk1 = o.getBrokerBuy();
+					String brk2 = o.getBrokerSell();
+					int qty1 = o.getQtyBuy();
+					int qty2 = o.getQtySell();
+					int bid = o.getBid();
+					int ask = o.getAsk();
+					int last = o.getLast();
+					String calljs1 = "\"FillOrder(1,'"+name+"','"+prd+"','"+brk1+"',"+qty1+","+bid+")\"";
+					String calljs2 = "\"FillOrder(0,'"+name+"','"+prd+"','"+brk2+"',"+qty2+","+ask+")\"";
+					txt = txt
+							+ "<tr class=\"odd gradeX\">"
+							+ "<td class=\"center\">"+ prd +"</td>"
+							+ "<td onclick="+calljs1+" class=\"center\">"+brk1+"</td>"
+							+ "<td onclick="+calljs1+" class=\"center\">"+qty1+"</td>"
+							+ "<td onclick="+calljs1+" class=\"center\">"+bid+"</td>"
+							+ "<td onclick="+calljs2+" class=\"center\">"+ask+"</td>"
+							+ "<td onclick="+calljs2+" class=\"center\">"+qty2+"</td>"
+							+ "<td onclick="+calljs2+" class=\"center\">"+brk2+"</td>"
+							+ "<td class=\"center\">"+last+"</td></tr>";
+				}
 			}
-			txt += "</tbody>";
-			if (id == -1) {
-				txt = "";
-			}
-			// String t = new String(txt.getBytes("utf-8"),"iso-8859-1");
+
+			txt += "</tbody>";			
 			out.println(txt);
 			out.flush();
 		} catch (Exception e) {
