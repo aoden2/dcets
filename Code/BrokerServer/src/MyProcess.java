@@ -48,7 +48,9 @@ public class MyProcess {
 			procOrder(1, oo);
 			ret.setTag(101, "0");
 		} else if (mf.getTag(35) == "3") {
-			// TODO Revocation
+			Integer i = Integer.parseInt(mf.getTag(102));
+			procOrder(2, i);
+			ret.setTag(101, "0");
 		} else if (mf.getTag(35) == "4") {
 			ret.setTag(110, "1");
 			procOrder(3, ret);
@@ -75,7 +77,8 @@ public class MyProcess {
 		}
 		// Revocation
 		else if (2 == action) {
-			// TODO Revocation
+			Integer i = (Integer) obj;
+			revocationOrder(i);
 		}
 		// Query Future
 		else if (3 == action) {
@@ -84,6 +87,52 @@ public class MyProcess {
 		return 0;
 	}
 
+	private void revocationOrder(int oid) {
+		OriginOrder oo = orders.get(oid);
+		if (oo == null) {
+			return ;
+		}
+		int status = oo.getStatus();
+		if (status== 2 || status == 3) {
+			for (int i = 1, j = buyQueue.size(); i < j; i ++)
+				if (buyQueue.get(i) == oid) {
+					buyQueue.set(i, buyQueue.get(j - 1));
+					buyQueue.remove(j - 1);
+					makeBuyHeap(i);
+					break;
+				}
+		}
+		else if (status== -2 || status == -3) {
+			for (int i = 1, j = sellQueue.size(); i < j; i ++)
+				if (sellQueue.get(i) == oid) {
+					sellQueue.set(i, sellQueue.get(j - 1));
+					sellQueue.remove(j - 1);
+					makeSellHeap(i);
+					break;
+				}
+		}
+		orders.remove(oid);
+		oo.setStatus(0);
+		// Update database
+		MyJDBC jdbc = new MyJDBC("BrokerServer");
+		Connection conn = jdbc.getConnection();
+		String sql = null;
+		PreparedStatement pst = null;
+		try {
+			sql = "update BrokerServer.OriginOrder set BrokerServer.OriginOrder.cumQtyl = ?, BrokerServer.OriginOrder.leavesqty = ?, BrokerServer.OriginOrder.status = ? where BrokerServer.OriginOrder.id = ?";
+			pst = conn.prepareStatement(sql);
+			pst.setInt(1, oo.getCumQtyl());
+			pst.setInt(2, oo.getLeavesqty());
+			pst.setInt(3, oo.getStatus());
+			pst.setInt(4, oo.getId());
+			pst.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			jdbc.close(conn, pst, null);
+		}
+	}
+	
 	private void addOrderToDatabase(OriginOrder oo) {
 		MyJDBC jdbc = new MyJDBC("BrokerServer");
 		Connection conn = jdbc.getConnection();
@@ -232,7 +281,7 @@ public class MyProcess {
 					sellQueue.set(1, sellQueue.get(sellQueue.size() - 1));
 					sellQueue.remove(sellQueue.size() - 1);
 					makeSellHeap(1);
-					sell.setStatus(0);
+					sell.setStatus(1);
 					orders.remove(sell.getId());
 				}
 				// update buy order
@@ -243,7 +292,7 @@ public class MyProcess {
 					buyQueue.set(1, buyQueue.get(buyQueue.size() - 1));
 					buyQueue.remove(buyQueue.size() - 1);
 					makeBuyHeap(1);
-					buy.setStatus(0);
+					buy.setStatus(-1);
 					orders.remove(buy.getId());
 				}
 

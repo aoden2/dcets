@@ -41,9 +41,7 @@ public class MyThread extends Thread {
 			data = MyAES.decrypt(data, password);
 			MyFIX mf = new MyFIX(data);
 			int msgType = Integer.parseInt(mf.getTag(35));
-			if (msgType == 5) {
-				// TODO Query database here.
-			} else if (msgType == 1 || msgType == 2 || msgType == 3
+			if (msgType == 1 || msgType == 2 || msgType == 3
 					|| msgType == 4) {
 				int fid = Integer.parseInt(mf.getTag(101));
 				MyProcess process = processes.get(fid);
