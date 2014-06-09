@@ -11,7 +11,6 @@ public class OriginOrderBiz {
 	OriginOrderDao oDao = new OriginOrderDaoImpl();
 	
 	public List<OriginOrder> listOriginOrder(int tid){
-		System.out.println("Im at Biz");
 		return oDao.listOriginOrder(tid);
 	}
 

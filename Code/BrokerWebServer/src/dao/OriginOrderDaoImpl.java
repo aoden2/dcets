@@ -16,10 +16,9 @@ public class OriginOrderDaoImpl implements OriginOrderDao {
 
 	@Override
 	public List<OriginOrder> listOriginOrder(int tid) {
-		System.out.println("Im here, oo DAO!");
 		List<OriginOrder> ans = new ArrayList<OriginOrder>();
 		Connection conn = jdbc.getConnection();
-		String sql = "select * from finalorder where tid=?;";
+		String sql = "select * from originorder where tid=?;";
 		ResultSet rs = null;
 		PreparedStatement pst = null;
 		try {
@@ -37,7 +36,6 @@ public class OriginOrderDaoImpl implements OriginOrderDao {
 		} finally {
 			jdbc.close(conn, pst, rs);
 		}
-		System.out.println("finding ans amount: " + ans.size());
 		return ans;
 	}
 

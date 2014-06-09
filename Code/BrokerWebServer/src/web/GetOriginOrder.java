@@ -16,7 +16,6 @@ public class GetOriginOrder {
 	@POST
 	@Produces(MediaType.TEXT_PLAIN)
 	public String getOriginOrder(String param) {
-		System.out.println("IM here , get oo");
 		OriginOrderBiz oBiz = new OriginOrderBiz();
 		List<OriginOrder> l = oBiz.listOriginOrder(Integer.parseInt(param));
 		String ans = "";
