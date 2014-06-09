@@ -21,6 +21,34 @@
   <!--[if lte IE 8]>
   <script language="javascript" type="text/javascript" src="js/flot/excanvas.min.js"></script>
   <![endif]-->
+  
+  <script type="text/javascript">
+    		
+        $(function () {
+            GetTrades();  
+            setInterval("GetTrades()", 15000); //每隔5秒刷新订单信息
+        });
+          
+        function GetTrades() {              
+            $.ajax({  
+                type: "get",  
+                url: "TradesDoneServlet", 
+                success: function (str) {
+                    
+                	$("#trades-done").html(str);                	                      
+                }  
+            }); 
+
+            $.ajax({  
+                type: "get",  
+                url: "TradesUndoneServlet", 
+                success: function (str) {
+                   
+                	$("#trades-undone").html(str);                	                      
+                }  
+            }); 
+        }        
+    </script>
 </head>
 <body>
 
@@ -99,34 +127,31 @@
 
   <div class="content container_12">
       <div class="box grid_12">
-        <div class="box-head"><h2>Done</h2></div>
+        <div class="box-head"><h2>已成交</h2></div>
         <div class="box-content no-pad">
           <table class="display">
           <thead>
             <tr>
-              <th>Rendering engine</th>
-              <th>Browser</th>
-              <th>Platform(s)</th>
-              <th>Engine version</th>
-              <th>CSS grade</th>
+              <th>TradeID</th>
+              <th>Broker</th>
+              <th>Product</th>
+              <th>Period</th>
+              <th>Price</th>
+              <th>Quantity</th>
+              <th>Payment</th>
+              <th>initiator Company</th>
+              <th>Completion Company</th>
+              <th></th>
             </tr>
           </thead>
-          <tbody>
-            <tr class="odd gradeX">
-              <td>Trident</td>
-              <td>Internet Explorer 4.0</td>
-              <td>Win 95+</td>
-              <td class="center"> 4</td>
-              <td class="center">X</td>
-            </tr>
-            
+          <tbody id="trades-done">            
           </tbody>
          </table>
         </div>
       </div>
       
       <div class="box grid_12">
-        <div class="box-head"><h2>Plain Table</h2></div>
+        <div class="box-head"><h2>待交易</h2></div>
         <div class="box-content no-pad">
           <table class="display">
           <thead>
@@ -138,15 +163,7 @@
               <th>CSS grade</th>
             </tr>
           </thead>
-          <tbody>
-            <tr class="odd gradeX">
-              <td>Trident</td>
-              <td>Internet Explorer 4.0</td>
-              <td>Win 95+</td>
-              <td class="center"> 4</td>
-              <td class="center">X</td>
-            </tr>
-            
+          <tbody id="trades-undone">            
           </tbody>
          </table>
         </div>
