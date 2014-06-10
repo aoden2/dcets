@@ -7,10 +7,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import client.httpRequest;
 import util.JDBCUtil;
 import util.WSParser;
-import entity.BrokerInfo;
+import client.httpRequest;
 import entity.Future;
 
 public class FutureDaoImpl implements FutureDao {
@@ -21,7 +20,6 @@ public class FutureDaoImpl implements FutureDao {
 		String future_str = httpRequest.sendGet("http://59.78.3.25:8080/BrokerWebServer/services/getFuture", null);
 		List<Future> l = WSParser.parseAllFuture(future_str);
 		Connection conn = jdbc.getConnection();
-		ResultSet rs = null;
 		PreparedStatement pst = null;
 		String sql = "";
 		try {
@@ -42,16 +40,31 @@ public class FutureDaoImpl implements FutureDao {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
-			jdbc.close(conn, pst, rs);
+			jdbc.close(conn, pst, null);
 		}
 	}
 
 	public List<Future> getAllFutures(int bid) {
 		List<Future> futures = new ArrayList<Future>();
-		BrokerDao bd = new BrokerDaoImpl();
-		BrokerInfo broker = bd.getBrokerbyId(bid);
-
-		String future_str = "";// HttpHelper.SendHttpRequest("get",
+		//BrokerDao bd = new BrokerDaoImpl();
+		//BrokerInfo broker = bd.getBrokerbyId(bid);
+		Connection conn = jdbc.getConnection();
+		ResultSet rs = null;
+		String sql = "select * from future;";
+		PreparedStatement pst = null;
+		try {
+			pst = conn.prepareStatement(sql);
+			rs = pst.executeQuery();
+			while (rs.next()){
+				Future f = new Future(rs.getInt("id"), rs.getString("category"), rs.getString("name"), rs.getString("period"));
+				futures.add(f);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			jdbc.close(conn, pst, null);
+		}
+		//String future_str = "";// HttpHelper.SendHttpRequest("get",
 								// broker.getIp()+":8080/BrokerWebServer/services/getFuture",
 								// null);
 
@@ -60,29 +73,66 @@ public class FutureDaoImpl implements FutureDao {
 
 	public int getFutureByNamePeriod(String name, String period) {
 		int ans = 0;
-		/*
-		 * Connection conn = jdbc.getConnection(); String sql =
-		 * "select * from originorder where tid=?;"; ResultSet rs = null;
-		 * PreparedStatement pst = null; try { pst = conn.prepareStatement(sql);
-		 * pst.setInt(1, tid); rs = pst.executeQuery(); while (rs.next()) {
-		 * ans.add(new OriginOrder(rs.getInt("id"), rs.getInt("fid"), rs
-		 * .getInt("tid"), rs.getInt("quantity"), rs .getInt("cumQtyl"),
-		 * rs.getInt("leavesqty"), rs .getInt("price"), rs.getDate("d"),
-		 * rs.getInt("status"))); } } catch (SQLException e) {
-		 * e.printStackTrace(); } finally { jdbc.close(conn, pst, rs); }
-		 */
+		Connection conn = jdbc.getConnection();
+		ResultSet rs = null;
+		String sql = "select * from future where name=? && period=?;";
+		PreparedStatement pst = null;
+		try {
+			pst = conn.prepareStatement(sql);
+			pst.setString(1, name);
+			pst.setString(2, period);
+			rs = pst.executeQuery();
+			if (rs.next())
+				ans = rs.getInt("id");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			jdbc.close(conn, pst, null);
+		}
 		return ans;
 	}
 
 	public List<Integer> getFutureByName(String name) {
-		// TODO Auto-generated method stub
-		return null;
+		List<Integer> ans = new ArrayList<>();
+		Connection conn = jdbc.getConnection();
+		ResultSet rs = null;
+		String sql = "select * from future where name=?;";
+		PreparedStatement pst = null;
+		try {
+			pst = conn.prepareStatement(sql);
+			pst.setString(1, name);
+			rs = pst.executeQuery();
+			while (rs.next()){
+				int id = rs.getInt("id");
+				ans.add(id);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			jdbc.close(conn, pst, null);
+		}
+		return ans;
 	}
 
-	@Override
 	public List<String> getAllFutureName() {
-		// TODO Auto-generated method stub
-		return null;
+		List<String> ans = new ArrayList<>();
+		Connection conn = jdbc.getConnection();
+		ResultSet rs = null;
+		String sql = "select * from future;";
+		PreparedStatement pst = null;
+		try {
+			pst = conn.prepareStatement(sql);
+			rs = pst.executeQuery();
+			while (rs.next()){
+				String name = rs.getString("name");
+				ans.add(name);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			jdbc.close(conn, pst, null);
+		}
+		return ans;
 	}
 
 }
