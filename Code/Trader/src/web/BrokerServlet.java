@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import dao.BrokerDao;
+import dao.BrokerDaoImpl;
 import entity.BrokerInfo;
 
 /**
@@ -21,7 +22,7 @@ import entity.BrokerInfo;
 public class BrokerServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
-	private BrokerDao dao;
+	private BrokerDao dao = new BrokerDaoImpl();
     /**
      * @see HttpServlet#HttpServlet()
      */

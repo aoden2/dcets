@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import dao.FutureDao;
+import dao.FutureDaoImpl;
 
 /**
  * 获取商品名列表
@@ -20,7 +21,7 @@ import dao.FutureDao;
 public class ItemServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
-	private FutureDao dao;
+	private FutureDao dao = new FutureDaoImpl();
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -32,6 +33,7 @@ public class ItemServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request,
             HttpServletResponse response)
             throws ServletException, IOException {
+    	System.out.println("Im at item servlet!");
         PrintWriter out = response.getWriter(); 
 
         try {    

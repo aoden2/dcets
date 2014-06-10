@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import dao.OrderDao;
+import dao.OrderDaoImpl;
 import entity.FinalOrder;
 
 /**
@@ -21,7 +22,7 @@ import entity.FinalOrder;
 public class TradesDoneServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
-	OrderDao dao;
+	OrderDao dao = new OrderDaoImpl();
     /**
      * @see HttpServlet#HttpServlet()
      */

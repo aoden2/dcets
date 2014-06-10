@@ -46,12 +46,14 @@ public class SendOrderServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
+		System.out.println("Im in, sending order");
 		String opt = request.getParameter("operation");// 0=buy 1=sell
 		String item_name = request.getParameter("name");
 		String broker_name = request.getParameter("broker");
 		int quantity = Integer.parseInt(request.getParameter("quantity"));
-		int price = Integer.parseInt(request.getParameter("quantity"));
+		int price = Integer.parseInt(request.getParameter("price"));
 		String period = request.getParameter("period");
+		System.out.println("I get all the parameter.");
 		FutureDao fd = new FutureDaoImpl();
 		BrokerDao bd = new BrokerDaoImpl();
 		int fid = fd.getFutureByNamePeriod(item_name, period);
