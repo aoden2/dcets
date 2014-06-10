@@ -53,7 +53,7 @@ public class BrokerReceiver {
 			for (int x = 0; x < 5; x++) {
 				max = -1;
 				for (int k = i; k < j; k++)
-					if (3 == l.get(k).getType()) // Buy
+					if ((0 == l.get(k).getType()) || (3 == l.get(k).getType())) // Buy
 						if ((-1 == max) || (l.get(k).getBid()>l.get(max).getBid()))
 							max = k;
 				if (-1 != max){
@@ -68,7 +68,7 @@ public class BrokerReceiver {
 			for (int x = 0; x < 5; x++) {
 				min = -1;
 				for (int k = i; k < j; k++)
-					if (-3 == l.get(k).getType()) // Sell
+					if ((0 == l.get(k).getType()) || (-3 == l.get(k).getType())) // Sell
 						if ((-1 == min) || (l.get(k).getAsk() < l.get(min).getAsk()))
 							min = k;
 				if (-1 != min){
