@@ -38,6 +38,13 @@ public class OriginOrderFIXHelper {
 		mf.setTag(101, String.valueOf(fid));
 		return mf.getFIX();
 	}
+	
+	public static String revokeOrderFIX(int fid, int ooid, int bid){
+		MyFIX mf = new MyFIX("3", comp_id, String.valueOf(bid), 1);
+		mf.setTag(101, String.valueOf(fid));
+		mf.setTag(102, String.valueOf(ooid));
+		return mf.getFIX();
+	}
 
 	public static TraderOrder parseQueryFuture(String fixData, int fid) {
 		MyFIX mf = new MyFIX(fixData);
