@@ -3,10 +3,11 @@ package dao;
 import java.util.ArrayList;
 import java.util.List;
 
-import client.httpRequest;
+import util.BrokerReceiver;
 import util.MyClient;
 import util.OriginOrderFIXHelper;
 import util.WSParser;
+import client.httpRequest;
 import entity.BrokerInfo;
 import entity.FinalOrder;
 import entity.OriginOrder;
@@ -18,8 +19,15 @@ public class OrderDaoImpl implements OrderDao{
 		return oos;
 	}
 	public List<TraderOrder> getOrdersByFutureName(String name){
-		List<TraderOrder> oos = new ArrayList<TraderOrder>();
-		return oos;
+		int bid = 2;
+		List<List<TraderOrder>> oos = new ArrayList<List<TraderOrder>>();
+		FutureDao fd = new FutureDaoImpl();
+		List<Integer> fids = fd.getFutureByName(name);
+		for (int i = 0; i < fids.size(); i++){
+			oos.add(getOrders(fids.get(i), bid));
+		}
+		return BrokerReceiver.mergeOrder(oos);
+
 	}
 	public OriginOrder initOriginOrder(int fid, int bid, int quantity, int price, int status){
 		OriginOrder oo = new OriginOrder();
@@ -55,5 +63,12 @@ public class OrderDaoImpl implements OrderDao{
 		String s = httpRequest.sendPost("http://59.78.3.25:8080/BrokerWebServer/services/getOriginOrder", ""+tid);
 		return WSParser.parseAllOriginOrder(s, 1);
 	}
+	
+	private List<TraderOrder> getOrders(int fid, int bid){
+		List<TraderOrder> tos = new ArrayList<TraderOrder>();
+		
+		return tos;
+	}
+
 
 }
