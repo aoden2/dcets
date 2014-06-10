@@ -84,4 +84,23 @@ public class BrokerDaoImpl implements BrokerDao {
 			}
 		return broker;
 	}
+	public int getBrokerIdbyName(String broker_name){
+		int broker_id = 0;
+		Connection conn = jdbc.getConnection();
+		String sql = "select * from brokerinfo where name=?;";
+		PreparedStatement pst = null;
+		ResultSet rs = null;
+		try {
+			pst = conn.prepareStatement(sql);
+			pst.setString(1, broker_name);
+			rs= pst.executeQuery();
+			rs.last();
+			broker_id = rs.getInt("id");
+			} catch (SQLException e) {
+				e.printStackTrace();
+			} finally {
+				jdbc.close(conn, pst, rs);
+			}
+		return broker_id;
+	}
 }
