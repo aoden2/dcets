@@ -2,12 +2,17 @@ package web;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import dao.OrderDao;
+import entity.FinalOrder;
 
 /**
  * Servlet implementation class TradesDoneServlet
@@ -16,6 +21,7 @@ import javax.servlet.http.HttpServletResponse;
 public class TradesDoneServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
+	OrderDao dao;
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -32,21 +38,21 @@ public class TradesDoneServlet extends HttpServlet {
 
 			//int id = Integer.parseInt(request.getParameter("id"));
 			// 根据类型用ajax方式传送对应类型的电脑列表
-			// List<Computer> list =dao.PCList(type);
+			List<FinalOrder> ls = new ArrayList<>();
+			ls = dao.getAllFinalOrder();
 			// String s = new String(type.getBytes("iso-8859-1"),"utf-8");
 			String txt = "";
-			for (int i = 0; i < 10; i++) {
+			for (FinalOrder f : ls) {
 				txt = txt
 						+ "<tr class=\"odd gradeX\">"
-						+ "<td class=\"center\"> 12345</td>"
-						+ "<td class=\"center\"> ABC</td>"
-						+ "<td class=\"center\"> Gold Swap</td>"
-						+ "<td class=\"center\"> SEP14</td>"
-						+ "<td class=\"center\"> 1246</td>"
-						+ "<td class=\"center\"> 5</td>"
-						+ "<td class=\"center\"> Paid</td>"
-						+ "<td class=\"center\"> A</td>"
-						+ "<td class=\"center\"> B</td>"
+						+ "<td class=\"center\">"+ f.getId()+"</td>"
+						+ "<td class=\"center\">"+"</td>"
+						+ "<td class=\"center\">"+"</td>"
+						+ "<td class=\"center\">" +"</td>"
+						+ "<td class=\"center\">" +"</td>"
+						+ "<td class=\"center\">" +"</td>"
+						+ "<td class=\"center\">" +"</td>"
+						
 						+ "</tr>";
 			}
 			// String t = new String(txt.getBytes("utf-8"),"iso-8859-1");

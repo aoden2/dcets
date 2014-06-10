@@ -1,9 +1,6 @@
 package web;
 
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -11,47 +8,63 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import dao.BrokerDao;
+import dao.BrokerDaoImpl;
+import dao.FutureDao;
+import dao.FutureDaoImpl;
 import dao.OrderDao;
-import entity.TraderOrder;
+import dao.OrderDaoImpl;
+import entity.OriginOrder;
 
 /**
- * Servlet implementation class SendOrderServlet
+ * Servlet implementation class ProcessOrderServlet
  */
 @WebServlet("/SendOrderServlet")
 public class SendOrderServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
-	OrderDao dao;
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public SendOrderServlet() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
-    
-    protected void processRequest(HttpServletRequest request,
+
+	/**
+	 * @see HttpServlet#HttpServlet()
+	 */
+	public SendOrderServlet() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
+	 *      response)
+	 */
+	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
-		//{operation:opt,name:itemname,broker:brk,quantity:qty,price:prc,period:prd}
-		String name = (String)request.getParameter("name");
-		
-			
+		// TODO Auto-generated method stub
 	}
 
 	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
+	 *      response)
 	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		processRequest(request, response);
-	}
-
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		processRequest(request, response);
+	protected void doPost(HttpServletRequest request,
+			HttpServletResponse response) throws ServletException, IOException {
+		String opt = request.getParameter("operation");// 0=buy 1=sell
+		String item_name = request.getParameter("name");
+		String broker_name = request.getParameter("broker");
+		int quantity = Integer.parseInt(request.getParameter("quantity"));
+		int price = Integer.parseInt(request.getParameter("quantity"));
+		String period = request.getParameter("period");
+		FutureDao fd = new FutureDaoImpl();
+		BrokerDao bd = new BrokerDaoImpl();
+		int fid = fd.getFutureByNamePeriod(item_name, period);
+		int bid = bd.getBrokerIdbyName(broker_name);
+		OrderDao od = new OrderDaoImpl();
+		OriginOrder oo = null;
+		if ("0".equals(opt)) {
+			oo = od.initOriginOrder(fid, bid, quantity, price, 3);
+		} else if ("1".equals(opt)) {
+			oo = od.initOriginOrder(fid, bid, quantity, price, -3);
+		}
+		od.sendOriginOrder(oo);
 	}
 
 }
+
