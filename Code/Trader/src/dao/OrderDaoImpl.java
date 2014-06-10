@@ -66,7 +66,17 @@ public class OrderDaoImpl implements OrderDao{
 	
 	private List<TraderOrder> getOrders(int fid, int bid){
 		List<TraderOrder> tos = new ArrayList<TraderOrder>();
-		
+		BrokerDao bd = new BrokerDaoImpl();
+		BrokerInfo broker = bd.getBrokerbyId(bid);
+		MyClient c = null;
+		try {
+			String data = OriginOrderFIXHelper.queryFutureFIX(fid, bid);
+			c = new MyClient(broker.getIp(), broker.getPort(), broker.getPass());
+			String rtn = c.send(data);
+			tos.add(OriginOrderFIXHelper.parseQueryFuture(rtn, fid));
+		} catch(Exception e) {
+			System.out.println("Error : " + e);
+		}
 		return tos;
 	}
 

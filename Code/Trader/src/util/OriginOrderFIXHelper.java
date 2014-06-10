@@ -3,7 +3,14 @@ package util;
 import java.util.ArrayList;
 import java.util.List;
 
+import dao.BrokerDao;
+import dao.BrokerDaoImpl;
+import dao.FutureDao;
+import dao.FutureDaoImpl;
+import entity.BrokerInfo;
+import entity.Future;
 import entity.OriginOrder;
+import entity.TraderOrder;
 
 public class OriginOrderFIXHelper {
 	private static String comp_id = "1";
@@ -30,6 +37,36 @@ public class OriginOrderFIXHelper {
 		MyFIX mf = new MyFIX("1", comp_id, String.valueOf(bid), 1);
 		mf.setTag(101, String.valueOf(fid));
 		return mf.getFIX();
+	}
+
+	public static TraderOrder parseQueryFuture(String fixData, int fid) {
+		MyFIX mf = new MyFIX(fixData);
+		TraderOrder to = new TraderOrder();
+		BrokerDao bd = new BrokerDaoImpl();
+		FutureDao fd = new FutureDaoImpl();
+		BrokerInfo broker = bd.getBrokerbyId(Integer.valueOf(mf.getTag(49)));
+		Future future = fd.getFutureById(fid);
+		to.setBrokerBuy(broker.getName());
+		to.setBrokerSell(broker.getName());
+		if ("-1".equals(mf.getTag(101)) == false) {
+			to.setBid(Integer.valueOf(mf.getTag(101)));
+			to.setQtyBuy(Integer.valueOf(mf.getTag(102)));
+		} else {
+			to.setBid(-1);
+			to.setQtyBuy(-1);
+		}
+		if ("-1".equals(mf.getTag(103)) == false) {
+			to.setAsk(Integer.valueOf(mf.getTag(103)));
+			to.setQtySell(Integer.valueOf(mf.getTag(104)));
+		} else {
+			to.setAsk(-1);
+			to.setQtySell(-1);
+		}
+		to.setFid(future.getId());
+		to.setName(future.getName());
+		to.setPeriod(future.getPeriod());
+		to.setLast(Integer.valueOf(mf.getTag(105)));
+		return to;
 	}
 
 	public static List<OriginOrder> parseOriginOrder(String fixData) {
