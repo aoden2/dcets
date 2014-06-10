@@ -1,14 +1,16 @@
 package dao;
 
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 
+import client.httpRequest;
+import util.MyClient;
+import util.OriginOrderFIXHelper;
+import util.WSParser;
+import entity.BrokerInfo;
 import entity.FinalOrder;
 import entity.OriginOrder;
-import entity.BrokerInfo;
 import entity.TraderOrder;
-import util.*;
-import dao.BrokerDao;
 
 public class OrderDaoImpl implements OrderDao{
 	public List<OriginOrder> getAllOrders(){
@@ -42,15 +44,16 @@ public class OrderDaoImpl implements OrderDao{
 			}
 		return rtn;
 	}
-	@Override
+
 	public List<FinalOrder> getAllFinalOrder() {
-		// TODO Auto-generated method stub
-		return null;
+		String s = httpRequest.sendGet("http://59.78.3.25:8080/BrokerWebServer/services/getFinalOrder", null);
+		List<FinalOrder> ans = WSParser.parseAllFinalOrder(s);
+		return ans;
 	}
-	@Override
+
 	public List<OriginOrder> getMyOriginOrder(int tid) {
-		// TODO Auto-generated method stub
-		return null;
+		String s = httpRequest.sendPost("http://59.78.3.25:8080/BrokerWebServer/services/getOriginOrder", ""+tid);
+		return WSParser.parseAllOriginOrder(s, 1);
 	}
 
 }
