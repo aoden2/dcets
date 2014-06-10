@@ -16,13 +16,19 @@ public class OriginOrderFIXHelper {
 			mf.setTag(102, String.valueOf(oo.getQuantity()));
 			mf.setTag(103, String.valueOf(oo.getPrice()));
 			mf.setTag(104, String.valueOf(oo.getStatus()));
-		} else if(oo.getStatus() == -3){
+		} else if (oo.getStatus() == -3) {
 			mf = new MyFIX("2", comp_id, String.valueOf(oo.getBid()), 1);
 			mf.setTag(101, String.valueOf(oo.getFid()));
 			mf.setTag(102, String.valueOf(oo.getQuantity()));
 			mf.setTag(103, String.valueOf(oo.getPrice()));
 			mf.setTag(104, String.valueOf(oo.getStatus()));
 		}
+		return mf.getFIX();
+	}
+
+	public static String queryFutureFIX(int fid, int bid) {
+		MyFIX mf = new MyFIX("1", comp_id, String.valueOf(bid), 1);
+		mf.setTag(101, String.valueOf(fid));
 		return mf.getFIX();
 	}
 
