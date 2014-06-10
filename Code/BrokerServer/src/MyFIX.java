@@ -24,7 +24,7 @@ public class MyFIX {
 		fix.put("9", "0");
 		fix.put("35", MsgType);
 		// fix.put("49", SenderCompID);
-		fix.put("49", "10010");
+		fix.put("49", "2");
 		fix.put("56", TargetCompID);
 		fix.put("34", Integer.toString(MsgSeqNum));
 		fix.put("52", "2014060714:14:14");
