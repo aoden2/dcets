@@ -15,8 +15,14 @@ public class OrderDaoImpl implements OrderDao{
 		return oos;
 	}
 	public List<TraderOrder> getOrdersByFutureName(String name){
-		List<TraderOrder> oos = new ArrayList<TraderOrder>();
-		return oos;
+		int bid = 2;
+		List<List<TraderOrder>> oos = new ArrayList<List<TraderOrder>>();
+		FutureDao fd = new FutureDaoImpl();
+		List<Integer> fids = fd.getFutureByName(name);
+		for (int i = 0; i < fids.size(); i++){
+			oos.add(getOrders(fids.get(i), bid));
+		}
+		return BrokerReceiver.mergeOrder(oos);
 	}
 	public OriginOrder initOriginOrder(int fid, int bid, int quantity, int price, int status){
 		OriginOrder oo = new OriginOrder();
@@ -41,5 +47,9 @@ public class OrderDaoImpl implements OrderDao{
 			}
 		return rtn;
 	}
-
+	private List<TraderOrder> getOrders(int fid, int bid){
+		List<TraderOrder> tos = new ArrayList<TraderOrder>();
+		
+		return tos;
+	}
 }
