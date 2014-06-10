@@ -1,11 +1,7 @@
 package test;
 
-import java.util.List;
+import client.httpRequest;
 
-import util.WSParser;
-import Client.httpRequest;
-import entity.FinalOrder;
-import entity.Future;
 
 public class test {
 
