@@ -34,7 +34,7 @@ public class OriginOrderFIXHelper {
 	}
 
 	public static String queryFutureFIX(int fid, int bid) {
-		MyFIX mf = new MyFIX("1", comp_id, String.valueOf(bid), 1);
+		MyFIX mf = new MyFIX("4", comp_id, String.valueOf(bid), 1);
 		mf.setTag(101, String.valueOf(fid));
 		return mf.getFIX();
 	}

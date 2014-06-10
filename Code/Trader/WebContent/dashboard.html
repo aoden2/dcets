@@ -66,11 +66,11 @@
 
         function sendOrder(){ //发送订单
             var opt=$("input[name='rgroup']:checked").val();
-            var itemname=$("#order-form-item").value;
-            var brk=$("#broker-select").value;
-            var prd=$("#order-form-period").value;
-            var qty=$("#order-form-qty").value;
-            var prc=$("#order-form-price").value;
+            var itemname=document.getElementById("order-form-item").value;
+            var brk=document.getElementById("broker-select").value;
+            var prd=document.getElementById("order-form-period").value;
+            var qty=document.getElementById("order-form-qty").value;
+            var prc=document.getElementById("order-form-price").value;
             $( "#modal-dialog" ).dialog( "close" );
         	$.ajax({  
                 type: "post",  
