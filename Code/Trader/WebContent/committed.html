@@ -47,6 +47,18 @@
                 	$("#trades-undone").html(str);                	                      
                 }  
             }); 
+        }
+
+        function Cancel(f) { 
+            var oid = f.id;            
+            $.ajax({  
+                type: "get",  
+                url: "CancelOrderServlet", 
+                data:{id:oid},                 
+                success: function (str) {
+                	alert("success");                     
+                }  
+            });  
         }        
     </script>
 </head>
@@ -132,16 +144,12 @@
           <table class="display">
           <thead>
             <tr>
-              <th>TradeID</th>
-              <th>Broker</th>
-              <th>Product</th>
-              <th>Period</th>
+              <th>TradeID</th>              
               <th>Price</th>
               <th>Quantity</th>
               <th>Payment</th>
-              <th>initiator Company</th>
-              <th>Completion Company</th>
-              <th></th>
+              <th>Bid orederId</th>
+              <th>Ask orderId</th>
             </tr>
           </thead>
           <tbody id="trades-done">            

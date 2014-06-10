@@ -12,7 +12,7 @@ import entity.Future;
 
 public class FutureDaoImpl implements FutureDao {
 
-	private JDBCUtil jdbc = new JDBCUtil("bws");
+	private JDBCUtil jdbc = new JDBCUtil("BrokerServer");
 	
 	@Override
 	public List<Future> listAllFuture() {

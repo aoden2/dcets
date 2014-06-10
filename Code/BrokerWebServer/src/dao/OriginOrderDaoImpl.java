@@ -12,7 +12,7 @@ import entity.OriginOrder;
 
 public class OriginOrderDaoImpl implements OriginOrderDao {
 
-	private JDBCUtil jdbc = new JDBCUtil("bws");
+	private JDBCUtil jdbc = new JDBCUtil("BrokerServer");
 
 	@Override
 	public List<OriginOrder> listOriginOrder(int tid) {

@@ -57,6 +57,7 @@ public class SendOrderServlet extends HttpServlet {
 		FutureDao fd = new FutureDaoImpl();
 		BrokerDao bd = new BrokerDaoImpl();
 		int fid = fd.getFutureByNamePeriod(item_name, period);
+		System.out.println("item_name="+item_name+"period="+period+"fid="+fid);
 		int bid = bd.getBrokerIdbyName(broker_name);
 		OrderDao od = new OrderDaoImpl();
 		OriginOrder oo = null;

@@ -13,9 +13,9 @@ public class JDBCUtil {
 
 	// Load MySql
 	public JDBCUtil(String name) {
-		url = "jdbc:mysql://127.0.0.1:3306/"+name;
+		url = "jdbc:mysql://59.78.3.10:3306/"+name;
 		username = "root";
-		password = "88619973y";
+		password = "yZNCoNJf183z9PgzlLpR";
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 		} catch (ClassNotFoundException e) {

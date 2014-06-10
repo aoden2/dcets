@@ -44,16 +44,20 @@ public class TradesDoneServlet extends HttpServlet {
 			// String s = new String(type.getBytes("iso-8859-1"),"utf-8");
 			String txt = "";
 			for (FinalOrder f : ls) {
+				int id = f.getId();
+				int qty = f.getQuantity();
+				int price = f.getPrice();
+				int bid = f.getObid();
+				int sid = f.getOsid();
+				
 				txt = txt
 						+ "<tr class=\"odd gradeX\">"
-						+ "<td class=\"center\">"+ f.getId()+"</td>"
-						+ "<td class=\"center\">"+"</td>"
-						+ "<td class=\"center\">"+"</td>"
-						+ "<td class=\"center\">" +"</td>"
-						+ "<td class=\"center\">" +"</td>"
-						+ "<td class=\"center\">" +"</td>"
-						+ "<td class=\"center\">" +"</td>"
-						
+						+ "<td class=\"center\">"+ id+"</td>"
+						+ "<td class=\"center\">"+price+"</td>"
+						+ "<td class=\"center\">"+qty+"</td>"
+						+ "<td class=\"center\">paid</td>"
+						+ "<td class=\"center\">" +bid+"</td>"
+						+ "<td class=\"center\">" +sid+"</td>"						
 						+ "</tr>";
 			}
 			// String t = new String(txt.getBytes("utf-8"),"iso-8859-1");

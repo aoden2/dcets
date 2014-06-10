@@ -12,7 +12,7 @@ import entity.FinalOrder;
 
 public class FinalOrderDaoImpl implements FinalOrderDao {
 
-	private JDBCUtil jdbc = new JDBCUtil("bws");
+	private JDBCUtil jdbc = new JDBCUtil("BrokerServer");
 
 	@Override
 	public List<FinalOrder> listAllFinalOrder() {
