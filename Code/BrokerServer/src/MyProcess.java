@@ -59,7 +59,7 @@ public class MyProcess {
 		return ret.getFIX();
 	}
 
-	public synchronized int procOrder(int action, Object obj) {//order) {
+	public synchronized int procOrder(int action, Object obj) {
 		// Buy
 		if (0 == action) {
 			OriginOrder order = (OriginOrder) obj;
