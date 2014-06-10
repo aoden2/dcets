@@ -3,6 +3,7 @@ package dao;
 import java.util.List;
 import java.util.ArrayList;
 
+import entity.FinalOrder;
 import entity.OriginOrder;
 import entity.BrokerInfo;
 import entity.TraderOrder;
@@ -15,14 +16,8 @@ public class OrderDaoImpl implements OrderDao{
 		return oos;
 	}
 	public List<TraderOrder> getOrdersByFutureName(String name){
-		int bid = 2;
-		List<List<TraderOrder>> oos = new ArrayList<List<TraderOrder>>();
-		FutureDao fd = new FutureDaoImpl();
-		List<Integer> fids = fd.getFutureByName(name);
-		for (int i = 0; i < fids.size(); i++){
-			oos.add(getOrders(fids.get(i), bid));
-		}
-		return BrokerReceiver.mergeOrder(oos);
+		List<TraderOrder> oos = new ArrayList<TraderOrder>();
+		return oos;
 	}
 	public OriginOrder initOriginOrder(int fid, int bid, int quantity, int price, int status){
 		OriginOrder oo = new OriginOrder();
@@ -47,9 +42,15 @@ public class OrderDaoImpl implements OrderDao{
 			}
 		return rtn;
 	}
-	private List<TraderOrder> getOrders(int fid, int bid){
-		List<TraderOrder> tos = new ArrayList<TraderOrder>();
-		
-		return tos;
+	@Override
+	public List<FinalOrder> getAllFinalOrder() {
+		// TODO Auto-generated method stub
+		return null;
 	}
+	@Override
+	public List<OriginOrder> getMyOriginOrder(int tid) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }
