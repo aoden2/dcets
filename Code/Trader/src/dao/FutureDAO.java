@@ -14,4 +14,6 @@ public interface FutureDao {
 	public int getFutureByNamePeriod(String name, String period);
 	
 	public List<Integer> getFutureByName(String name);
+	
+	public Future getFutureById(int id);
 }
