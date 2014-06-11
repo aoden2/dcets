@@ -47,6 +47,7 @@ public class FutureDaoImpl implements FutureDao {
 	}
 
 	public List<Future> getAllFutures(int bid) {
+		//refreshFutures();
 		List<Future> futures = new ArrayList<Future>();
 		// BrokerDao bd = new BrokerDaoImpl();
 		// BrokerInfo broker = bd.getBrokerbyId(bid);
@@ -76,6 +77,7 @@ public class FutureDaoImpl implements FutureDao {
 	}
 
 	public int getFutureByNamePeriod(String name, String period) {
+		//refreshFutures();
 		int ans = 0;
 		Connection conn = jdbc.getConnection();
 		ResultSet rs = null;
@@ -97,6 +99,7 @@ public class FutureDaoImpl implements FutureDao {
 	}
 
 	public List<Integer> getFutureByName(String name) {
+		//refreshFutures();
 		List<Integer> ans = new ArrayList<>();
 		Connection conn = jdbc.getConnection();
 		ResultSet rs = null;
@@ -119,10 +122,11 @@ public class FutureDaoImpl implements FutureDao {
 	}
 
 	public List<String> getAllFutureName() {
+		//refreshFutures();
 		List<String> ans = new ArrayList<>();
 		Connection conn = jdbc.getConnection();
 		ResultSet rs = null;
-		String sql = "select * from future;";
+		String sql = "select distinct name from future;";
 		PreparedStatement pst = null;
 		try {
 			pst = conn.prepareStatement(sql);
@@ -140,6 +144,7 @@ public class FutureDaoImpl implements FutureDao {
 	}
 
 	public Future getFutureById(int id) {
+		//refreshFutures();
 		Future ans = null;
 		Connection conn = jdbc.getConnection();
 		ResultSet rs = null;

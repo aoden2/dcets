@@ -37,7 +37,7 @@ public class ItemServlet extends HttpServlet {
         PrintWriter out = response.getWriter(); 
 
         try {    
-        	String txt = "<option value=''>Î´Ñ¡Ôñ</option>";
+        	String txt = "<option value=''>Null</option>";
         	List<String> ls = new ArrayList<>();
         	ls = dao.getAllFutureName();
         	for(String s : ls){

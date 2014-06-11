@@ -8,4 +8,6 @@ public interface OriginOrderDao {
 	
 	public List<OriginOrder> listOriginOrder(int tid);
 
+	public List<OriginOrder> listOriginOrder();
+
 }

@@ -39,7 +39,8 @@ public class TradesUndoneServlet extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
-		PrintWriter out = response.getWriter();
+    	response.setContentType("text/html");
+    	PrintWriter out = response.getWriter();
 
 		try {
 			String txt = "";
@@ -49,6 +50,7 @@ public class TradesUndoneServlet extends HttpServlet {
 				int status = o.getStatus();
 				if(Math.abs(status) >= 2){
 				int id = o.getId();
+				int fid = o.getFid();
 				int bid = o.getBid();
 				String bname = bdao.getBrokerbyId(bid).getName();
 				int iid = o.getFid();
@@ -65,7 +67,7 @@ public class TradesUndoneServlet extends HttpServlet {
 						+ "<td class=\"center\">"+price+"</td>"
 						+ "<td class=\"center\">"+qty+"</td>"
 						+ "<td class=\"center\"> Undone</td>"
-						+ "<td class=\"center\"><input type=\"button\" id=\""+id+"\" onclick=\"cancel(this)\" value=\"cancel\"></td>"						
+						+ "<td class=\"center\"><input type=\"button\" onclick=\"Cancel("+id+","+fid+")\" value=\"cancel\"></td>"						
 						+ "</tr>";
 				}
 				

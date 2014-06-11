@@ -34,7 +34,7 @@
                 type: "get",  
                 url: "TradesDoneServlet", 
                 success: function (str) {
-                    
+                    //alert(str);
                 	$("#trades-done").html(str);                	                      
                 }  
             }); 
@@ -49,12 +49,12 @@
             }); 
         }
 
-        function Cancel(f) { 
-            var oid = f.id;            
+        function Cancel(a,b) { 
+                       
             $.ajax({  
                 type: "get",  
                 url: "CancelOrderServlet", 
-                data:{id:oid},                 
+                data:{id:a,fid:b},                 
                 success: function (str) {
                 	alert("success");                     
                 }  
@@ -164,11 +164,14 @@
           <table class="display">
           <thead>
             <tr>
-              <th>Rendering engine</th>
-              <th>Browser</th>
-              <th>Platform(s)</th>
-              <th>Engine version</th>
-              <th>CSS grade</th>
+              <th>OrderID</th>              
+              <th>Broker</th>
+              <th>Product</th>
+              <th>Period</th>
+              <th>Price</th>
+              <th>Qty</th>
+              <th>status</th>
+              <th>Operation</th>
             </tr>
           </thead>
           <tbody id="trades-undone">            

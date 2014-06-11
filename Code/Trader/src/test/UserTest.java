@@ -1,13 +1,16 @@
 package test;
 
-import biz.UserBiz;
-import biz.UserBizImpl;
+import dao.OrderDao;
+import dao.OrderDaoImpl;
 
 public class UserTest {
 
 	public static void main(String[] args) {
-		UserBizImpl uBiz = new UserBiz();
-		uBiz.newUser("zc", "aaa");
+		OrderDao oDao = new OrderDaoImpl();
+		System.out.println(oDao.getMyOriginOrder(1).get(0).getFid());
+		System.out.println(oDao.getMyOriginOrder(1).get(1).getFid());
+		System.out.println(oDao.getMyOriginOrder(1).get(2).getFid());
+		System.out.println(oDao.getMyOriginOrder(1).get(3).getFid());
 
 	}
 

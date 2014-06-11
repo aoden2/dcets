@@ -11,8 +11,8 @@ public class BrokerReceiver {
 		List<TraderOrder> ans = new ArrayList<TraderOrder>();
 		for (int i = 0; i < l.size(); i++)
 			ans.addAll(l.get(i));
-		ans = sortByPeriod(ans, 0, ans.size() - 1);
-		ans = selectOrder(ans);
+		//ans = sortByPeriod(ans, 0, ans.size() - 1);
+		//ans = selectOrder(ans);
 		return ans;
 	}
 
@@ -78,7 +78,8 @@ public class BrokerReceiver {
 					.getPeriod(), l.get(i).getName(), "", "", -1, -1, -1, -1, l
 					.get(i).getLast()));
 
-			temp = l;
+			temp = new ArrayList<>();
+			temp.addAll(l);
 			// Get 5 or less Highest Buy
 			int max;
 			for (int x = 0; x < 5; x++) {
